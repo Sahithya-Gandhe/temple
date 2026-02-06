@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 const nandiOptions = [
   { icon: '🕉', label: 'About the Temple', desc: 'Know our sacred heritage', href: '/about', color: 'from-[#4A3F35] to-[#5B5B5B]' },
@@ -14,23 +15,21 @@ const nandiOptions = [
 
 function NandiIcon({ className }) {
   return (
-    <svg className={className} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="50" cy="75" rx="30" ry="10" fill="currentColor" opacity="0.15"/>
-      <ellipse cx="48" cy="58" rx="22" ry="16" fill="currentColor" opacity="0.9"/>
-      <ellipse cx="28" cy="42" rx="12" ry="10" fill="currentColor" opacity="0.9"/>
-      <ellipse cx="20" cy="45" rx="6" ry="4.5" fill="currentColor" opacity="0.8"/>
-      <ellipse cx="52" cy="42" rx="10" ry="12" fill="currentColor" opacity="0.85"/>
-      <path d="M24 33 C20 22, 14 20, 12 22" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
-      <path d="M32 33 C36 22, 42 20, 44 22" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
-      <ellipse cx="22" cy="34" rx="4" ry="3" fill="currentColor" opacity="0.7"/>
-      <circle cx="25" cy="40" r="1.5" fill="white"/>
-      <circle cx="25" cy="40" r="0.8" fill="#2A2522"/>
-      <path d="M70 55 C78 50, 82 55, 78 62" stroke="currentColor" strokeWidth="2" strokeLinecap="round" fill="none"/>
-      <rect x="32" y="68" width="5" height="8" rx="2" fill="currentColor" opacity="0.7"/>
-      <rect x="55" y="68" width="5" height="8" rx="2" fill="currentColor" opacity="0.7"/>
-      <circle cx="28" cy="52" r="3" fill="none" stroke="currentColor" strokeWidth="1.5" opacity="0.6"/>
-      <line x1="28" y1="50" x2="28" y2="54" stroke="currentColor" strokeWidth="1" opacity="0.5"/>
-    </svg>
+    <div className={`${className} relative flex items-center justify-center`}>
+      <Image
+        src="/assets/nandi.jpg"
+        alt="Sacred Nandi"
+        width={160}
+        height={160}
+        className="w-full h-full object-cover rounded-full border-2 border-[#C9A24D]/30"
+        style={{ 
+          filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.35)) sepia(0.25) saturate(1.25) brightness(1.05)',
+          objectPosition: 'center center'
+        }}
+      />
+      {/* Subtle golden overlay to match theme */}
+      <div className="absolute inset-0 bg-[#C9A24D]/1 rounded-full pointer-events-none" />
+    </div>
   )
 }
 
@@ -43,31 +42,41 @@ export default function AskNandi() {
       <div className="fixed right-4 bottom-6 z-40">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="group relative"
+          className="group relative nandi-button-enhanced"
           aria-label="Ask Nandi – Temple Guide"
         >
           {/* Floating pulsing button */}
           <div className="relative">
-            {/* Subtle pulse ring */}
-            <div className="absolute -inset-2 bg-[#C9A24D]/10 rounded-full animate-pulse" />
+            {/* Strong pulse rings */}
+            <div className="absolute -inset-4 bg-[#C9A24D]/20 rounded-full animate-ping" />
+            <div className="absolute -inset-2 bg-[#C9A24D]/15 rounded-full animate-pulse" />
             
-            {/* Main button */}
-            <div className="relative w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-[#4A3F35] to-[#5B5B5B] rounded-full shadow-lg flex items-center justify-center border border-[#C9A24D]/30 group-hover:scale-105 transition-all duration-300">
-              {/* Nandi icon */}
-              <NandiIcon className="w-7 h-7 md:w-9 md:h-9 text-[#C9A24D] drop-shadow-sm" />
+            {/* Main button - bigger and more prominent */}
+            <div className="relative w-18 h-18 md:w-20 md:h-20 bg-gradient-to-br from-[#4A3F35] via-[#5B5B5B] to-[#4A3F35] rounded-full shadow-2xl flex items-center justify-center border-2 border-[#C9A24D]/50 group-hover:scale-110 transition-all duration-300" 
+                 style={{ filter: 'drop-shadow(0 0 20px rgba(201, 162, 77, 0.4))' }}>
+              {/* Nandi icon - bigger */}
+              <NandiIcon className="w-12 h-12 md:w-14 md:h-14 text-[#C9A24D] drop-shadow-lg" />
               
-              {/* Notification dot */}
-              <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5 md:h-3 md:w-3">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#C9A24D] opacity-50"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 md:h-3 md:w-3 bg-[#C9A24D]"></span>
+              {/* Enhanced notification dot */}
+              <span className="absolute -top-2 -right-2 flex h-4 w-4 md:h-5 md:w-5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#C9A24D] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-4 w-4 md:h-5 md:w-5 bg-[#C9A24D] shadow-lg"></span>
               </span>
             </div>
           </div>
           
-          {/* Tooltip */}
-          <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 bg-[#4A3F35] text-white px-3 py-2 rounded-lg text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none hidden md:block">
-            Ask Nandi - Your Divine Guide
-            <div className="absolute top-1/2 -translate-y-1/2 left-full border-4 border-transparent border-l-[#4A3F35]"></div>
+          {/* Enhanced Tooltip - more prominent */}
+          <div className="absolute right-full mr-6 top-1/2 -translate-y-1/2 bg-gradient-to-r from-[#4A3F35] to-[#5B5B5B] text-white px-4 py-3 rounded-lg text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none border border-[#C9A24D]/30 shadow-xl" 
+               style={{ filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.3))' }}>
+            <div className="text-[#C9A24D] font-bold text-base mb-1" style={{fontFamily:'Cinzel,serif'}}>Ask Nandi</div>
+            <div className="text-white/90 text-xs" style={{fontFamily:'Inter,sans-serif'}}>Your Divine Temple Guide</div>
+            <div className="absolute top-1/2 -translate-y-1/2 left-full border-6 border-transparent border-l-[#4A3F35]"></div>
+          </div>
+
+          {/* Mobile floating text label */}
+          <div className="md:hidden absolute bottom-full mb-3 left-1/2 -translate-x-1/2 bg-[#4A3F35] text-white px-3 py-2 rounded-lg text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none border border-[#C9A24D]/30 shadow-lg">
+            <div className="text-[#C9A24D] font-bold" style={{fontFamily:'Cinzel,serif'}}>Ask Nandi</div>
+            <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#4A3F35]"></div>
           </div>
         </button>
       </div>
@@ -91,14 +100,14 @@ export default function AskNandi() {
             <div className="relative bg-[#4A3F35] p-5 text-white overflow-hidden">
               <div className="relative flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-14 h-14 bg-[#C9A24D]/15 rounded-full flex items-center justify-center border border-[#C9A24D]/25">
-                    <NandiIcon className="w-9 h-9 text-[#C9A24D]" />
+                  <div className="w-20 h-20 bg-[#C9A24D]/15 rounded-full flex items-center justify-center border border-[#C9A24D]/25 overflow-hidden">
+                    <NandiIcon className="w-16 h-16" />
                   </div>
                   <div>
-                    <h3 className="text-white/70 text-[11px] tracking-[0.1em] uppercase" style={{fontFamily:'Cinzel,serif'}}>
+                    <h3 className="text-[#C9A24D] text-[14px] font-bold tracking-[0.1em] uppercase" style={{fontFamily:'Cinzel,serif'}}>
                       Nandi
                     </h3>
-                    <p className="text-white/70 text-[11px] tracking-[0.1em] uppercase" style={{fontFamily:'Inter,sans-serif'}}>
+                    <p className="text-white/80 text-[12px] tracking-[0.1em] uppercase" style={{fontFamily:'Inter,sans-serif'}}>
                       Your Divine Guide
                     </p>
                   </div>

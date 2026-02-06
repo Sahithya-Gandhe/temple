@@ -365,3 +365,26 @@ textarea,
   background: rgba(201, 162, 77, 0.2);
   color: var(--color-text-heading);
 }
+
+/* ─── Ask Nandi Enhanced Animations ─── */
+@keyframes nandi-attention {
+  0%, 90%, 100% { transform: scale(1); }
+  95% { transform: scale(1.1); }
+}
+
+@keyframes nandi-glow {
+  0%, 100% { filter: drop-shadow(0 0 10px rgba(201, 162, 77, 0.3)); }
+  50% { filter: drop-shadow(0 0 25px rgba(201, 162, 77, 0.6)); }
+}
+
+@keyframes nandi-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+.nandi-button-enhanced {
+  animation: 
+    nandi-attention 4s ease-in-out infinite,
+    nandi-glow 3s ease-in-out infinite,
+    nandi-float 6s ease-in-out infinite;
+}
