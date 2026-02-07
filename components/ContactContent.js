@@ -1,10 +1,107 @@
 'use client'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useState } from 'react'
 import { useTranslation } from '@/lib/LanguageContext'
+import emailjs from '@emailjs/browser'
 
 export default function ContactContent() {
   const { t } = useTranslation()
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    subject: '',
+    message: ''
+  })
+  const [status, setStatus] = useState({ type: '', message: '' })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    setStatus({ type: '', message: '' })
+
+    try {
+      // Get EmailJS configuration from environment variables
+      const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
+      const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+      const adminTemplateId = process.env.NEXT_PUBLIC_EMAILJS_ADMIN_TEMPLATE_ID
+      const autoReplyTemplateId = process.env.NEXT_PUBLIC_EMAILJS_AUTOREPLY_TEMPLATE_ID
+
+      console.log('EmailJS Config:', { serviceId, publicKey, adminTemplateId, autoReplyTemplateId })
+
+      if (!serviceId || !publicKey || !adminTemplateId || !autoReplyTemplateId) {
+        throw new Error('Email service not configured')
+      }
+
+      // Initialize EmailJS with public key
+      emailjs.init(publicKey)
+
+      // Prepare template parameters with all required fields
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        phone_number: formData.phone || 'Not provided',
+        subject: formData.subject,
+        message: formData.message,
+        reply_to: formData.email,
+        to_name: formData.name,
+        to_email: 'trustee.agastheeshwara@gmail.com', // Admin email
+        submission_date: new Date().toLocaleString('en-IN', {
+          dateStyle: 'full',
+          timeStyle: 'short',
+          timeZone: 'Asia/Kolkata'
+        })
+      }
+
+      console.log('Sending admin email...')
+      
+      // Send email to temple administration
+      const adminResult = await emailjs.send(
+        serviceId,
+        adminTemplateId,
+        templateParams
+      )
+      
+      console.log('Admin email sent:', adminResult)
+      console.log('Sending auto-reply...')
+
+      // Send auto-reply to the user
+      const autoReplyResult = await emailjs.send(
+        serviceId,
+        autoReplyTemplateId,
+        templateParams
+      )
+      
+      console.log('Auto-reply sent:', autoReplyResult)
+
+      setStatus({
+        type: 'success',
+        message: 'Your message has been sent successfully! We will respond within 3 business days.'
+      })
+      setFormData({ name: '', email: '', phone: '', subject: '', message: '' })
+
+    } catch (error) {
+      console.error('Email send error:', error)
+      console.error('Error details:', {
+        message: error.message,
+        text: error.text,
+        status: error.status
+      })
+      setStatus({
+        type: 'error',
+        message: error.text || error.message || 'Failed to send message. Please try again later.'
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
 
   return (
     <>
@@ -75,7 +172,18 @@ export default function ContactContent() {
             <div className="bg-white p-8 md:p-12 rounded-xl shadow-premium border border-[#C9A24D]/10 mb-14">
               <h3 className="text-[1.4rem] text-[#1C1C1C] mb-8 text-center" style={{fontFamily:'Cinzel,serif'}}>{t('contact.sendMessage')}</h3>
 
-              <form className="space-y-6">
+              {/* Status Message */}
+              {status.message && (
+                <div className={`mb-6 p-4 rounded-lg text-sm font-medium ${
+                  status.type === 'success' 
+                    ? 'bg-green-50 text-green-700 border border-green-200' 
+                    : 'bg-red-50 text-red-700 border border-red-200'
+                }`} style={{fontFamily:'Inter,sans-serif'}}>
+                  {status.message}
+                </div>
+              )}
+
+              <form className="space-y-6" onSubmit={handleSubmit}>
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-[13px] font-medium text-[#3A3A3A] mb-2" style={{fontFamily:'Inter,sans-serif'}}>
@@ -83,6 +191,9 @@ export default function ContactContent() {
                     </label>
                     <input
                       type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
                       required
                       className="w-full px-4 py-3 border border-[#C9A24D]/20 rounded-lg focus:outline-none focus:border-[#C9A24D] focus:ring-1 focus:ring-[#C9A24D] transition-colors bg-[#FAF9F6]"
                       style={{fontFamily:'EB Garamond,serif', fontSize:'16px'}}
@@ -95,6 +206,9 @@ export default function ContactContent() {
                     </label>
                     <input
                       type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
                       required
                       className="w-full px-4 py-3 border border-[#C9A24D]/20 rounded-lg focus:outline-none focus:border-[#C9A24D] focus:ring-1 focus:ring-[#C9A24D] transition-colors bg-[#FAF9F6]"
                       style={{fontFamily:'EB Garamond,serif', fontSize:'16px'}}
@@ -109,6 +223,9 @@ export default function ContactContent() {
                   </label>
                   <input
                     type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
                     className="w-full px-4 py-3 border border-[#C9A24D]/20 rounded-lg focus:outline-none focus:border-[#C9A24D] focus:ring-1 focus:ring-[#C9A24D] transition-colors bg-[#FAF9F6]"
                     style={{fontFamily:'EB Garamond,serif', fontSize:'16px'}}
                     placeholder={t('contact.enterPhone')}
@@ -120,6 +237,9 @@ export default function ContactContent() {
                     {t('contact.subject')} <span className="text-[#C9A24D]">*</span>
                   </label>
                   <select
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleChange}
                     required
                     className="w-full px-4 py-3 border border-[#C9A24D]/20 rounded-lg focus:outline-none focus:border-[#C9A24D] focus:ring-1 focus:ring-[#C9A24D] transition-colors bg-[#FAF9F6]"
                     style={{fontFamily:'EB Garamond,serif', fontSize:'16px'}}
@@ -138,6 +258,9 @@ export default function ContactContent() {
                     {t('contact.yourMessage')} <span className="text-[#C9A24D]">*</span>
                   </label>
                   <textarea
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
                     required
                     rows={5}
                     className="w-full px-4 py-3 border border-[#C9A24D]/20 rounded-lg focus:outline-none focus:border-[#C9A24D] focus:ring-1 focus:ring-[#C9A24D] transition-colors resize-none bg-[#FAF9F6]"
@@ -147,8 +270,8 @@ export default function ContactContent() {
                 </div>
 
                 <div className="text-center">
-                  <button type="submit" className="btn-gold px-12">
-                    {t('contact.sendBtn')}
+                  <button type="submit" className="btn-gold px-12" disabled={isSubmitting}>
+                    {isSubmitting ? 'Sending...' : t('contact.sendBtn')}
                   </button>
                 </div>
               </form>
