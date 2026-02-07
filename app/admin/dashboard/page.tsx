@@ -2,6 +2,9 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
+import { useTranslation } from '@/lib/LanguageContext'
+import LanguageSwitcher from '@/components/LanguageSwitcher'
 
 interface Donation {
   id: string
@@ -22,6 +25,7 @@ export default function AdminDashboard() {
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
   const router = useRouter()
+  const { t } = useTranslation()
 
   const fetchDonations = useCallback(async () => {
     try {
@@ -143,8 +147,8 @@ export default function AdminDashboard() {
       <header className="sticky top-0 z-50 bg-[#FAF9F6] border-b border-[#C9A24D]/20 px-4 py-4 shadow-sm">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-[#C9A24D]/10 rounded-full flex items-center justify-center border-2 border-[#C9A24D]/40">
-              <span className="text-xl">🛕</span>
+            <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#C9A24D]/40 shadow-sm">
+              <Image src="/assets/templelogoheader.jpeg" alt="Temple Logo" width={48} height={48} className="w-full h-full object-cover" />
             </div>
             <div>
               <h1 className="text-xl font-semibold text-[#1C1C1C]" style={{ fontFamily: 'Cinzel, serif' }}>Admin Dashboard</h1>
@@ -152,6 +156,7 @@ export default function AdminDashboard() {
             </div>
           </div>
           <div className="flex items-center gap-4">
+            <LanguageSwitcher />
             <Link href="/" target="_blank" className="text-[#C9A24D] hover:text-[#4A3F35] text-sm font-medium transition-colors" style={{ fontFamily: 'Inter, sans-serif' }}>
               View Site →
             </Link>
@@ -221,7 +226,7 @@ export default function AdminDashboard() {
                       </div>
                     ) : (
                       <label className="cursor-pointer block py-4">
-                        <span className="text-3xl block mb-2">📷</span>
+                        <svg className="w-8 h-8 mx-auto mb-2 text-[#C9A24D]" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z"/><path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z"/></svg>
                         <span className="text-sm text-[#6B6B6B]" style={{ fontFamily: 'Inter, sans-serif' }}>Click to upload photo</span>
                         <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
                       </label>
@@ -255,7 +260,7 @@ export default function AdminDashboard() {
 
               {donations.length === 0 ? (
                 <div className="text-center py-16 bg-[#FAF9F6] rounded-xl border border-[#C9A24D]/10">
-                  <span className="text-5xl block mb-4 opacity-40">🍛</span>
+                  <svg className="w-12 h-12 mx-auto mb-4 text-[#C9A24D]/30" fill="none" stroke="currentColor" strokeWidth={1} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M21 11.25v8.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 1 0 9.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1 1 14.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z"/></svg>
                   <p className="text-[#6B6B6B]" style={{ fontFamily: 'EB Garamond, serif' }}>No donations yet</p>
                 </div>
               ) : (

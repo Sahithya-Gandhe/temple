@@ -3,15 +3,17 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
+import { useTranslation } from '@/lib/LanguageContext'
+import LanguageSwitcher from '@/components/LanguageSwitcher'
 
 const navLinks = [
-  { href: '/about', label: 'About' },
-  { href: '/history', label: 'History' },
-  { href: '/management', label: 'Management' },
-  { href: '/gallery', label: 'Gallery' },
-  { href: '/donate', label: 'Donate' },
-  { href: '/location', label: 'Location' },
-  { href: '/contact', label: 'Contact' },
+  { href: '/about', key: 'nav.about' },
+  { href: '/history', key: 'nav.history' },
+  { href: '/management', key: 'nav.management' },
+  { href: '/gallery', key: 'nav.gallery' },
+  { href: '/donate', key: 'nav.donate' },
+  { href: '/location', key: 'nav.location' },
+  { href: '/contact', key: 'nav.contact' },
 ]
 
 export default function Header() {
@@ -21,6 +23,7 @@ export default function Header() {
   const lastScrollY = useRef(0)
   const ticking = useRef(false)
   const pathname = usePathname()
+  const { t } = useTranslation()
 
   const handleScroll = useCallback(() => {
     const currentScrollY = window.scrollY
@@ -85,10 +88,10 @@ export default function Header() {
             </div>
             <div className="hidden sm:block">
               <h1 className="text-[18px] tracking-[0.03em] leading-tight font-semibold !text-[#1C1C1C]" style={{ fontFamily: 'Cinzel,serif', color: '#1C1C1C' }}>
-                Sri Agastheeshwara
+                {t('header.templeName')}
               </h1>
               <p className="text-[11px] tracking-[0.08em] uppercase mt-1" style={{ fontFamily: 'Inter,sans-serif', color: '#5A5A5A' }}>
-                Devasthanam · Thondavada
+                {t('header.subtitle')}
               </p>
             </div>
           </Link>
@@ -108,21 +111,26 @@ export default function Header() {
                   }`}
                   style={{ fontFamily: 'Inter,sans-serif' }}
                 >
-                  {link.label}
+                  {t(link.key)}
                   {isActive && (
                     <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-[2px] bg-[#C9A24D] rounded-full" />
                   )}
                 </Link>
               )
             })}
+            <div className="ml-2">
+              <LanguageSwitcher />
+            </div>
           </nav>
 
           {/* Mobile Menu Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 text-[#4A3F35] hover:text-[#C9A24D] transition-colors"
-            aria-label="Toggle menu"
-          >
+          <div className="lg:hidden flex items-center gap-2">
+            <LanguageSwitcher />
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 text-[#4A3F35] hover:text-[#C9A24D] transition-colors"
+              aria-label="Toggle menu"
+            >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               {mobileMenuOpen ? (
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
@@ -131,6 +139,7 @@ export default function Header() {
               )}
             </svg>
           </button>
+          </div>
         </div>
 
         {/* Mobile Navigation */}
@@ -152,7 +161,7 @@ export default function Header() {
                   }`}
                   style={{ fontFamily: 'Inter,sans-serif' }}
                 >
-                  {link.label}
+                  {t(link.key)}
                 </Link>
               )
             })}

@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { verifySession } from '@/lib/auth'
 import sql from '@/lib/db'
-import { writeFile, mkdir } from 'fs/promises'
-import path from 'path'
-import { randomUUID } from 'crypto'
 
 // GET - Fetch all donations (admin only)
 export async function GET() {
@@ -54,18 +51,12 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Save image to public/uploads/donations/
-    const uploadsDir = path.join(process.cwd(), 'public', 'uploads', 'donations')
-    await mkdir(uploadsDir, { recursive: true })
-
-    const ext = imageFile.name.split('.').pop() || 'jpg'
-    const filename = `${randomUUID()}.${ext}`
-    const filepath = path.join(uploadsDir, filename)
-
+    // Convert image to base64 data URI (works on Vercel's read-only filesystem)
     const bytes = await imageFile.arrayBuffer()
-    await writeFile(filepath, Buffer.from(bytes))
-
-    const imageUrl = `/uploads/donations/${filename}`
+    const buffer = Buffer.from(bytes)
+    const mimeType = imageFile.type || 'image/jpeg'
+    const base64 = buffer.toString('base64')
+    const imageUrl = `data:${mimeType};base64,${base64}`
 
     // Insert into database
     const result = await sql`

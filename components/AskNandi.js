@@ -2,16 +2,31 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useTranslation } from '@/lib/LanguageContext'
 
 const nandiOptions = [
-  { icon: '🕉', label: 'About the Temple', desc: 'Know our sacred heritage', href: '/about', color: 'from-[#4A3F35] to-[#5B5B5B]' },
-  { icon: '📜', label: 'History & Legends', desc: 'Sage Agastya & Swarnamukhi', href: '/history', color: 'from-[#5B5B5B] to-[#6B6B6B]' },
-  { icon: '🍛', label: 'Annadanam Seva', desc: 'Daily free meals for 300+ devotees', href: '/donate#annadanam', color: 'from-[#C9A24D] to-[#D4B56A]' },
-  { icon: '💛', label: 'How to Donate', desc: 'Support our sacred mission', href: '/donate', color: 'from-[#C9A24D] to-[#BFA76A]' },
-  { icon: '🖼', label: 'Gallery', desc: 'Visual glimpses of divinity', href: '/gallery', color: 'from-[#6B6B6B] to-[#BFA76A]' },
-  { icon: '📍', label: 'How to Reach', desc: '10 km from Tirupati', href: '/location', color: 'from-[#4A3F35] to-[#6B6B6B]' },
-  { icon: '📞', label: 'Contact Temple', desc: 'Get in touch with us', href: '/contact', color: 'from-[#4A3F35] to-[#5B5B5B]' },
+  { iconType: 'om', labelKey: 'nandi.aboutTemple', descKey: 'nandi.aboutDesc', href: '/about', color: 'from-[#4A3F35] to-[#5B5B5B]' },
+  { iconType: 'book', labelKey: 'nandi.historyLegends', descKey: 'nandi.historyDesc', href: '/history', color: 'from-[#5B5B5B] to-[#6B6B6B]' },
+  { iconType: 'gift', labelKey: 'nandi.annadanam', descKey: 'nandi.annadanamDesc', href: '/donate#annadanam', color: 'from-[#C9A24D] to-[#D4B56A]' },
+  { iconType: 'heart', labelKey: 'nandi.howToDonate', descKey: 'nandi.donateDesc', href: '/donate', color: 'from-[#C9A24D] to-[#BFA76A]' },
+  { iconType: 'photo', labelKey: 'nandi.gallery', descKey: 'nandi.galleryDesc', href: '/gallery', color: 'from-[#6B6B6B] to-[#BFA76A]' },
+  { iconType: 'pin', labelKey: 'nandi.howToReach', descKey: 'nandi.reachDesc', href: '/location', color: 'from-[#4A3F35] to-[#6B6B6B]' },
+  { iconType: 'phone', labelKey: 'nandi.contactTemple', descKey: 'nandi.contactDesc', href: '/contact', color: 'from-[#4A3F35] to-[#5B5B5B]' },
 ]
+
+function NandiOptionIcon({ type }) {
+  const cls = "w-[18px] h-[18px] text-white"
+  switch(type) {
+    case 'om': return <span className="text-white text-sm font-bold" style={{fontFamily:'serif'}}>ॐ</span>
+    case 'book': return <svg className={cls} fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg>
+    case 'gift': return <svg className={cls} fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M21 11.25v8.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 1 0 9.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1 1 14.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z"/></svg>
+    case 'heart': return <svg className={cls} fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/></svg>
+    case 'photo': return <svg className={cls} fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0 0 22.5 18.75V5.25a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 3.75 21Z"/></svg>
+    case 'pin': return <svg className={cls} fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
+    case 'phone': return <svg className={cls} fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"/></svg>
+    default: return null
+  }
+}
 
 function NandiIcon({ className }) {
   return (
@@ -35,6 +50,7 @@ function NandiIcon({ className }) {
 
 export default function AskNandi() {
   const [isOpen, setIsOpen] = useState(false)
+  const { t } = useTranslation()
 
   return (
     <>
@@ -68,14 +84,14 @@ export default function AskNandi() {
           {/* Enhanced Tooltip - more prominent */}
           <div className="absolute right-full mr-6 top-1/2 -translate-y-1/2 bg-gradient-to-r from-[#4A3F35] to-[#5B5B5B] text-white px-4 py-3 rounded-lg text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none border border-[#C9A24D]/30 shadow-xl" 
                style={{ filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.3))' }}>
-            <div className="text-[#C9A24D] font-bold text-base mb-1" style={{fontFamily:'Cinzel,serif'}}>Ask Nandi</div>
-            <div className="text-white/90 text-xs" style={{fontFamily:'Inter,sans-serif'}}>Your Divine Temple Guide</div>
+            <div className="text-[#C9A24D] font-bold text-base mb-1" style={{fontFamily:'Cinzel,serif'}}>{t('nandi.askNandi')}</div>
+            <div className="text-white/90 text-xs" style={{fontFamily:'Inter,sans-serif'}}>{t('nandi.divineGuide')}</div>
             <div className="absolute top-1/2 -translate-y-1/2 left-full border-6 border-transparent border-l-[#4A3F35]"></div>
           </div>
 
           {/* Mobile floating text label */}
           <div className="md:hidden absolute bottom-full mb-3 left-1/2 -translate-x-1/2 bg-[#4A3F35] text-white px-3 py-2 rounded-lg text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none border border-[#C9A24D]/30 shadow-lg">
-            <div className="text-[#C9A24D] font-bold" style={{fontFamily:'Cinzel,serif'}}>Ask Nandi</div>
+            <div className="text-[#C9A24D] font-bold" style={{fontFamily:'Cinzel,serif'}}>{t('nandi.askNandi')}</div>
             <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#4A3F35]"></div>
           </div>
         </button>
@@ -105,10 +121,10 @@ export default function AskNandi() {
                   </div>
                   <div>
                     <h3 className="text-[#C9A24D] text-[14px] font-bold tracking-[0.1em] uppercase" style={{fontFamily:'Cinzel,serif'}}>
-                      Nandi
+                      {t('nandi.askNandi')}
                     </h3>
                     <p className="text-white/80 text-[12px] tracking-[0.1em] uppercase" style={{fontFamily:'Inter,sans-serif'}}>
-                      Your Divine Guide
+                      {t('nandi.divineGuide')}
                     </p>
                   </div>
                 </div>
@@ -123,8 +139,7 @@ export default function AskNandi() {
 
               <div className="relative mt-3 p-3 bg-white/10 rounded-lg border border-white/10">
                 <p className="text-[14px] text-white/90 leading-relaxed" style={{fontFamily:'EB Garamond,serif'}}>
-                  Namaskaram! I am <span className="font-semibold text-[#C9A24D]">Nandi</span>, the eternal guardian of Lord Shiva.
-                  How may I guide you today?
+                  {t('nandi.greeting')}
                 </p>
               </div>
             </div>
@@ -137,14 +152,14 @@ export default function AskNandi() {
                   style={{animationDelay: `${i * 0.05}s`}}
                 >
                   <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${option.color} flex items-center justify-center flex-shrink-0 shadow-sm group-hover:scale-105 transition-transform`}>
-                    <span className="text-[18px]">{option.icon}</span>
+                    <NandiOptionIcon type={option.iconType} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <span className="text-[#1C1C1C] group-hover:text-[#C9A24D] font-medium text-[14px] block transition-colors" style={{fontFamily:'Inter,sans-serif'}}>
-                      {option.label}
+                      {t(option.labelKey)}
                     </span>
                     <span className="text-[#6B6B6B] text-[11px] block" style={{fontFamily:'Inter,sans-serif'}}>
-                      {option.desc}
+                      {t(option.descKey)}
                     </span>
                   </div>
                   <svg className="w-4 h-4 text-[#C9A24D] group-hover:translate-x-1 transition-all flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -157,7 +172,7 @@ export default function AskNandi() {
             {/* Footer */}
             <div className="p-3 border-t border-[#C9A24D]/10 bg-[#F8F6F2]">
               <p className="text-center text-[12px] text-[#6B6B6B]" style={{fontFamily:'EB Garamond,serif'}}>
-                Om Namah Shivaya
+                {t('nandi.omNamah')}
               </p>
             </div>
           </div>

@@ -42,8 +42,8 @@ export default function AdminLogin() {
         <div className="bg-white rounded-xl shadow-lg p-8 border" style={{ borderColor: 'rgba(201,162,77,0.2)' }}>
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="w-16 h-16 mx-auto mb-4 bg-[#C9A24D]/10 rounded-full flex items-center justify-center border-2 border-[#C9A24D]/40">
-              <span className="text-3xl">🛕</span>
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full overflow-hidden border-2 border-[#C9A24D]/40 shadow-sm">
+              <img src="/assets/templelogoheader.jpeg" alt="Temple" className="w-full h-full object-cover" />
             </div>
             <h1 className="text-2xl font-semibold" style={{ fontFamily: 'Cinzel, serif', color: '#C9A24D' }}>
               Admin Login

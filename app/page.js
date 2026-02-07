@@ -1,8 +1,11 @@
+'use client'
 import Image from 'next/image'
 import Link from 'next/link'
 import QRCodeImage from '@/components/QRCodeImage'
+import { useTranslation } from '@/lib/LanguageContext'
 
 export default function Home() {
+  const { t } = useTranslation()
   return (
     <>
       {/* ═══════════ HERO SECTION ═══════════ */}
@@ -25,7 +28,7 @@ export default function Home() {
         <div className="relative z-10 text-center text-white px-6 max-w-4xl mx-auto">
           {/* Sanskrit */}
           <p className="text-[#C9A24D] text-[15px] md:text-[17px] mb-6 tracking-[0.2em] fade-in" style={{ fontFamily: 'EB Garamond,serif' }}>
-            ॥ ॐ नमः शिवाय ॥
+            {t('home.sanskrit')}
           </p>
 
           {/* Main Title */}
@@ -36,34 +39,34 @@ export default function Home() {
           {/* Divider */}
           <div className="flex items-center justify-center gap-4 my-6 fade-in-delay-2">
             <span className="block w-16 md:w-24 h-[1px] bg-gradient-to-r from-transparent to-[#C9A24D]/60" />
-            <span className="text-[#C9A24D] text-lg">❖</span>
+            <svg className="w-3.5 h-3.5 text-[#C9A24D]" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg>
             <span className="block w-16 md:w-24 h-[1px] bg-gradient-to-l from-transparent to-[#C9A24D]/60" />
           </div>
 
           {/* Location */}
           <p className="text-[1.1rem] md:text-[1.3rem] text-white/90 mb-2 tracking-[0.15em] uppercase fade-in-delay-2" style={{ fontFamily: 'Cinzel,serif', fontWeight: 500 }}>
-            Thondavada
+            {t('home.location')}
           </p>
 
           {/* Subtitle */}
           <p className="text-[1rem] md:text-[1.1rem] text-white/70 mb-10 max-w-xl mx-auto leading-relaxed fade-in-delay-2" style={{ fontFamily: 'EB Garamond,serif', fontStyle: 'italic' }}>
-            A Sacred Shaiva Kshetram on the Banks of the Swarnamukhi River
+            {t('home.subtitle')}
           </p>
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center fade-in-delay-3">
             <Link href="/about" className="inline-flex items-center justify-center h-[50px] px-8 bg-[#C9A24D] text-white text-[13px] font-medium tracking-[0.08em] uppercase rounded-md hover:bg-[#D4B56A] hover:-translate-y-0.5 transition-all shadow-md" style={{ fontFamily: 'Cinzel,serif' }}>
-              About the Temple
+              {t('home.ctaAbout')}
             </Link>
             <Link href="/donate" className="inline-flex items-center justify-center h-[50px] px-8 bg-[#C9A24D] text-white text-[13px] font-medium tracking-[0.08em] uppercase rounded-md hover:bg-[#D4B56A] hover:-translate-y-0.5 transition-all shadow-md" style={{ fontFamily: 'Cinzel,serif' }}>
-              Annadanam & Donate
+              {t('home.ctaDonate')}
             </Link>
           </div>
         </div>
 
         {/* Scroll indicator */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-20">
-          <p className="text-white/60 text-[10px] uppercase tracking-[0.2em]" style={{ fontFamily: 'Inter,sans-serif' }}>Scroll</p>
+          <p className="text-white/60 text-[10px] uppercase tracking-[0.2em]" style={{ fontFamily: 'Inter,sans-serif' }}>{t('home.scroll')}</p>
           <div className="w-[1px] h-8 bg-gradient-to-b from-white/40 to-transparent" />
         </div>
       </section>
@@ -74,27 +77,23 @@ export default function Home() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Text */}
             <div>
-              <p className="text-[#1C1C1C] uppercase tracking-[0.15em] text-[11px] mb-3 font-medium" style={{ fontFamily: 'Inter,sans-serif' }}>Sacred Heritage</p>
+              <p className="text-[#1C1C1C] uppercase tracking-[0.15em] text-[11px] mb-3 font-medium" style={{ fontFamily: 'Inter,sans-serif' }}>{t('home.sacredHeritage')}</p>
               <h2 className="text-[#1C1C1C] mb-6" style={{ fontFamily: 'Cinzel,serif' }}>
-                A Temple of Great Antiquity
+                {t('home.templeAntiquity')}
               </h2>
               <div className="space-y-4 text-[#5A5044] leading-[1.8] text-[16px]" style={{ fontFamily: 'EB Garamond,serif' }}>
                 <p>
-                  Sri Agastheeshwara Swamy Temple, Thondavada, is one of the most ancient and spiritually
-                  significant Shaiva temples in Andhra Pradesh. The temple is situated on the northern bank
-                  of the sacred Swarnamukhi River, at the foothills of the Tirumala Hills.
+                  {t('home.templeDesc1')}
                 </p>
                 <p>
-                  The presiding deity is Lord Shiva worshipped as <strong className="text-[#1C1C1C]">Sri Agastheeshwara Swamy</strong>,
-                  with Goddess Parvati Devi revered as <strong className="text-[#1C1C1C]">Sri Anandavalli Ammavaru</strong>.
+                  {t('home.templeDesc2p1')} <strong className="text-[#1C1C1C]">{t('home.templeDesc2name1')}</strong>{t('home.templeDesc2p2')} <strong className="text-[#1C1C1C]">{t('home.templeDesc2name2')}</strong>.
                 </p>
                 <p>
-                  This sacred site was once the hermitage of the great <strong className="text-[#1C1C1C]">Sage Agastya Maharshi</strong>,
-                  one of the revered Saptarishis, who performed intense penance here for the welfare of humanity.
+                  {t('home.templeDesc3p1')} <strong className="text-[#1C1C1C]">{t('home.templeDesc3name')}</strong>{t('home.templeDesc3p2')}
                 </p>
               </div>
               <Link href="/history" className="inline-flex items-center gap-2 mt-6 text-[#1C1C1C] font-medium hover:text-[#4A3F35] transition-colors group text-[14px]" style={{ fontFamily: 'Inter,sans-serif' }}>
-                Read Full History
+                {t('home.readFullHistory')}
                 <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
@@ -120,17 +119,17 @@ export default function Home() {
         <div className="container-temple">
           {/* Section header */}
           <div className="text-center mb-12">
-            <p className="text-[#1C1C1C] uppercase tracking-[0.15em] text-[11px] mb-3 font-medium" style={{ fontFamily: 'Inter,sans-serif' }}>Sacred Service</p>
+            <p className="text-[#1C1C1C] uppercase tracking-[0.15em] text-[11px] mb-3 font-medium" style={{ fontFamily: 'Inter,sans-serif' }}>{t('home.sacredService')}</p>
             <h2 className="text-[1.8rem] md:text-[2.2rem] text-[#1C1C1C] mb-4" style={{ fontFamily: 'Cinzel,serif' }}>
-              Annadanam Seva
+              {t('home.annadanamSeva')}
             </h2>
             <div className="flex items-center justify-center gap-4 mb-4">
               <span className="block w-10 h-[1px] bg-gradient-to-r from-transparent to-[#C9A24D]" />
-              <span className="text-[#C9A24D] text-sm">❖</span>
+              <svg className="w-3 h-3 text-[#C9A24D]" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg>
               <span className="block w-10 h-[1px] bg-gradient-to-l from-transparent to-[#C9A24D]" />
             </div>
             <p className="text-[#6B6B6B] max-w-xl mx-auto text-[16px]" style={{ fontFamily: 'EB Garamond,serif' }}>
-              <em>"Annam Parabrahma Swaroopam"</em> — Food is a divine form of the Supreme
+              <em>{t('home.annadanamQuote')}</em>
             </p>
           </div>
 
@@ -141,7 +140,7 @@ export default function Home() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
               <div className="absolute bottom-6 left-6 text-white">
                 <p className="text-[2.5rem] md:text-[3rem] leading-none" style={{ fontFamily: 'Cinzel,serif', fontWeight: 600 }}>300–400</p>
-                <p className="text-[14px] text-white/70 mt-2" style={{ fontFamily: 'Inter,sans-serif' }}>Devotees blessed daily</p>
+                <p className="text-[14px] text-white/70 mt-2" style={{ fontFamily: 'Inter,sans-serif' }}>{t('home.devoteesBlessed')}</p>
               </div>
             </div>
 
@@ -149,25 +148,22 @@ export default function Home() {
             <div className="space-y-5">
               <div className="bg-white p-6 rounded-xl border-l-3 border-[#C9A24D] shadow-soft">
                 <p className="text-[#3A3A3A] leading-[1.8] text-[16px]" style={{ fontFamily: 'EB Garamond,serif' }}>
-                  With the divine blessings of Lord Agastheeshwara, the Trust humbly renders Annadanam,
-                  one of the most sacred forms of service. Every day, free, wholesome, and sanctified meals
-                  (Anna Prasadam) are lovingly served to all devotees.
+                  {t('home.annadanamDesc')}
                 </p>
               </div>
 
               <div className="flex items-center gap-4 p-5 bg-white rounded-xl border border-[#C9A24D]/15 shadow-soft">
                 <div className="w-12 h-12 bg-[#C9A24D] rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="text-white text-xl">🕐</span>
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
                 </div>
                 <div>
-                  <p className="text-[#6B6B6B] text-[13px]" style={{ fontFamily: 'Inter,sans-serif' }}>Daily Service Time</p>
+                  <p className="text-[#6B6B6B] text-[13px]" style={{ fontFamily: 'Inter,sans-serif' }}>{t('home.dailyServiceTime')}</p>
                   <p className="text-[1.5rem] text-[#1C1C1C]" style={{ fontFamily: 'Cinzel,serif' }}>12:30 PM</p>
                 </div>
               </div>
 
               <p className="text-[#6B6B6B] text-[15px]" style={{ fontFamily: 'EB Garamond,serif' }}>
-                Devotees are graciously invited to sponsor Annadanam on auspicious occasions — birthdays,
-                anniversaries, or sacred days — as an act of devotion and gratitude.
+                {t('home.annadanamSponsor')}
               </p>
 
               {/* QR Section */}
@@ -176,10 +172,10 @@ export default function Home() {
                   <QRCodeImage size={144} className="object-contain w-full h-full p-2" />
                 </div>
                 <p className="text-[13px] text-[#6B6B6B] mb-4" style={{ fontFamily: 'EB Garamond,serif' }}>
-                  Scan to contribute towards Annadanam Seva
+                  {t('home.scanToContribute')}
                 </p>
                 <Link href="/donate" className="btn-gold">
-                  Sponsor Annadanam
+                  {t('home.sponsorAnnadanam')}
                 </Link>
               </div>
             </div>
@@ -192,13 +188,13 @@ export default function Home() {
         <div className="container-temple">
           {/* Header */}
           <div className="text-center mb-10">
-            <p className="text-[#1C1C1C] uppercase tracking-[0.15em] text-[11px] mb-3 font-medium" style={{ fontFamily: 'Inter,sans-serif' }}>Stewardship</p>
+            <p className="text-[#1C1C1C] uppercase tracking-[0.15em] text-[11px] mb-3 font-medium" style={{ fontFamily: 'Inter,sans-serif' }}>{t('home.stewardship')}</p>
             <h2 className="text-[1.8rem] md:text-[2.2rem] text-[#1C1C1C] mb-4" style={{ fontFamily: 'Cinzel,serif' }}>
-              Honourable Trustees
+              {t('home.honourableTrustees')}
             </h2>
             <div className="flex items-center justify-center gap-4 mb-6">
               <span className="block w-10 h-[1px] bg-gradient-to-r from-transparent to-[#C9A24D]" />
-              <span className="text-[#C9A24D] text-sm">❖</span>
+              <svg className="w-3 h-3 text-[#C9A24D]" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg>
               <span className="block w-10 h-[1px] bg-gradient-to-l from-transparent to-[#C9A24D]" />
             </div>
           </div>
@@ -219,7 +215,7 @@ export default function Home() {
               {/* Bottom bar */}
               <div className="bg-[#4A3F35] p-6 text-center">
                 <p className="text-white/90 text-[15px]" style={{ fontFamily: 'Cinzel,serif' }}>
-                  Temple Leadership & Distinguished Contributors
+                  {t('home.templeLeadership')}
                 </p>
               </div>
             </div>
@@ -228,13 +224,10 @@ export default function Home() {
           {/* Description */}
           <div className="mt-8 max-w-3xl mx-auto text-center">
             <p className="text-[#3A3A3A] leading-[1.8] text-[16px]" style={{ fontFamily: 'EB Garamond,serif' }}>
-              The Hereditary Trustee, Sri M. Chandramouli Reddy, IAS Garu, along with his brother
-              Sri M. Sundara Rami Reddy Garu, served as Managing Trustees for <strong>41 years</strong>.
-              Subsequently, their cousin Sri M. Raghurami Reddy Garu served as Managing Trustee
-              for <strong>17 years</strong>.
+              {t('home.trusteeDesc')}
             </p>
             <Link href="/management" className="inline-flex items-center gap-2 mt-6 text-[#C9A24D] hover:text-[#4A3F35] transition-colors group text-[14px]" style={{ fontFamily: 'Inter,sans-serif' }}>
-              Learn More About Management
+              {t('home.learnMoreManagement')}
               <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
@@ -247,17 +240,17 @@ export default function Home() {
       <section className="section bg-[#F8F6F2]">
         <div className="container-temple">
           <div className="text-center mb-12">
-            <p className="text-[#1C1C1C] uppercase tracking-[0.15em] text-[11px] mb-3 font-medium" style={{ fontFamily: 'Inter,sans-serif' }}>Visual Journey</p>
+            <p className="text-[#1C1C1C] uppercase tracking-[0.15em] text-[11px] mb-3 font-medium" style={{ fontFamily: 'Inter,sans-serif' }}>{t('home.visualJourney')}</p>
             <h2 className="text-[1.8rem] md:text-[2.2rem] text-[#1C1C1C] mb-4" style={{ fontFamily: 'Cinzel,serif' }}>
-              Temple Gallery
+              {t('home.templeGallery')}
             </h2>
             <div className="flex items-center justify-center gap-4 mb-4">
               <span className="block w-10 h-[1px] bg-gradient-to-r from-transparent to-[#C9A24D]" />
-              <span className="text-[#C9A24D] text-sm">❖</span>
+              <svg className="w-3 h-3 text-[#C9A24D]" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg>
               <span className="block w-10 h-[1px] bg-gradient-to-l from-transparent to-[#C9A24D]" />
             </div>
             <p className="text-[#6B6B6B] max-w-xl mx-auto text-[16px]" style={{ fontFamily: 'EB Garamond,serif' }}>
-              Glimpses of the sacred temple, its divine architecture, and spiritual celebrations
+              {t('home.galleryDesc')}
             </p>
           </div>
 
@@ -280,7 +273,7 @@ export default function Home() {
           </div>
 
           <div className="text-center mt-10">
-            <Link href="/gallery" className="btn-secondary">View Full Gallery</Link>
+            <Link href="/gallery" className="btn-secondary">{t('home.viewFullGallery')}</Link>
           </div>
         </div>
       </section>
@@ -293,17 +286,16 @@ export default function Home() {
         </div>
 
         <div className="relative z-10 container-temple text-center text-white">
-          <p className="text-[#C9A24D] tracking-[0.15em] text-[11px] mb-4 font-medium" style={{ fontFamily: 'Inter,sans-serif' }}>PLAN YOUR VISIT</p>
+          <p className="text-[#C9A24D] tracking-[0.15em] text-[11px] mb-4 font-medium" style={{ fontFamily: 'Inter,sans-serif' }}>{t('home.planYourVisit')}</p>
           <h2 className="text-[1.8rem] md:text-[2.2rem] mb-5 text-white" style={{ fontFamily: 'Cinzel,serif' }}>
-            Visit the Sacred Abode
+            {t('home.visitSacredAbode')}
           </h2>
           <p className="text-white/70 max-w-2xl mx-auto mb-8 text-[16px] leading-relaxed" style={{ fontFamily: 'EB Garamond,serif' }}>
-            Experience the divine presence of Lord Agastheeshwara at this ancient temple,
-            just 10 km from Tirupati on the Tirupati–Chittoor–Bengaluru Highway.
+            {t('home.visitDesc')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/location" className="inline-flex items-center justify-center h-[50px] px-8 bg-[#C9A24D] text-white text-[13px] font-medium tracking-[0.08em] uppercase rounded-md hover:bg-[#D4B56A] hover:-translate-y-0.5 transition-all shadow-md" style={{ fontFamily: 'Cinzel,serif' }}>How to Reach</Link>
-            <Link href="/contact" className="inline-flex items-center justify-center h-[50px] px-8 bg-[#C9A24D] text-white text-[13px] font-medium tracking-[0.08em] uppercase rounded-md hover:bg-[#D4B56A] hover:-translate-y-0.5 transition-all shadow-md" style={{ fontFamily: 'Cinzel,serif' }}>Contact Us</Link>
+            <Link href="/location" className="inline-flex items-center justify-center h-[50px] px-8 bg-[#C9A24D] text-white text-[13px] font-medium tracking-[0.08em] uppercase rounded-md hover:bg-[#D4B56A] hover:-translate-y-0.5 transition-all shadow-md" style={{ fontFamily: 'Cinzel,serif' }}>{t('home.howToReach')}</Link>
+            <Link href="/contact" className="inline-flex items-center justify-center h-[50px] px-8 bg-[#C9A24D] text-white text-[13px] font-medium tracking-[0.08em] uppercase rounded-md hover:bg-[#D4B56A] hover:-translate-y-0.5 transition-all shadow-md" style={{ fontFamily: 'Cinzel,serif' }}>{t('home.contactUs')}</Link>
           </div>
         </div>
       </section>
