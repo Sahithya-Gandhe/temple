@@ -13,6 +13,7 @@ export async function GET() {
     const donations = await sql`
       SELECT id, donor_name, amount, image_url, approved, created_at
       FROM annadanam_donations
+      WHERE image_url LIKE 'data:%'
       ORDER BY created_at DESC
     `
     return NextResponse.json(donations)
