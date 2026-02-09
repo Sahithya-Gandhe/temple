@@ -1,0 +1,52 @@
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
+
+const r2Client = new S3Client({
+  region: 'auto',
+  endpoint: `https://${process.env.CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+  credentials: {
+    accessKeyId: process.env.R2_ACCESS_KEY || '',
+    secretAccessKey: process.env.R2_SECRET_KEY || '',
+  },
+})
+
+const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024
+
+const ensureEnv = (name: string) => {
+  if (!process.env[name]) {
+    throw new Error(`Missing required env var: ${name}`)
+  }
+}
+
+const buildPublicUrl = (key: string) => {
+  ensureEnv('R2_PUBLIC_URL')
+  const base = process.env.R2_PUBLIC_URL || ''
+  return `${base.replace(/\/$/, '')}/${key}`
+}
+
+export const validateImageBuffer = (buffer: Buffer, contentType: string) => {
+  if (!contentType.startsWith('image/')) {
+    throw new Error('Only image files are allowed')
+  }
+  if (buffer.length > MAX_IMAGE_SIZE_BYTES) {
+    throw new Error('Image must be 5MB or smaller')
+  }
+}
+
+export const uploadToR2 = async (key: string, body: Buffer, contentType: string) => {
+  ensureEnv('CLOUDFLARE_ACCOUNT_ID')
+  ensureEnv('R2_ACCESS_KEY')
+  ensureEnv('R2_SECRET_KEY')
+  ensureEnv('R2_BUCKET')
+
+  await r2Client.send(
+    new PutObjectCommand({
+      Bucket: process.env.R2_BUCKET,
+      Key: key,
+      Body: body,
+      ContentType: contentType,
+      CacheControl: 'public, max-age=31536000, immutable',
+    })
+  )
+
+  return buildPublicUrl(key)
+}
