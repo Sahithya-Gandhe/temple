@@ -17,9 +17,7 @@ const ensureEnv = (name: string) => {
   }
 }
 
-const buildPublicUrl = (key: string) => {
-  ensureEnv('R2_PUBLIC_URL')
-  const base = process.env.R2_PUBLIC_URL || ''
+const buildPublicUrl = (base: string, key: string) => {
   return `${base.replace(/\/$/, '')}/${key}`
 }
 
@@ -37,6 +35,7 @@ export const uploadToR2 = async (key: string, body: Buffer, contentType: string)
   ensureEnv('R2_ACCESS_KEY')
   ensureEnv('R2_SECRET_KEY')
   ensureEnv('R2_BUCKET')
+  ensureEnv('R2_PUBLIC_URL')
 
   await r2Client.send(
     new PutObjectCommand({
@@ -48,5 +47,37 @@ export const uploadToR2 = async (key: string, body: Buffer, contentType: string)
     })
   )
 
-  return buildPublicUrl(key)
+  return buildPublicUrl(process.env.R2_PUBLIC_URL || '', key)
+}
+
+export const uploadToGalleryR2 = async (key: string, body: Buffer, contentType: string) => {
+  ensureEnv('CLOUDFLARE_ACCOUNT_ID')
+  ensureEnv('R2_ACCESS_KEY')
+  ensureEnv('R2_SECRET_KEY')
+  ensureEnv('R2_GALLERY_BUCKET')
+  ensureEnv('R2_GALLERY_PUBLIC_URL')
+
+  try {
+    await r2Client.send(
+      new PutObjectCommand({
+        Bucket: process.env.R2_GALLERY_BUCKET,
+        Key: key,
+        Body: body,
+        ContentType: contentType,
+        CacheControl: 'public, max-age=31536000, immutable',
+      })
+    )
+
+    return buildPublicUrl(process.env.R2_GALLERY_PUBLIC_URL || '', key)
+  } catch (error) {
+    const message = error instanceof Error ? error.message : ''
+    if (message.includes('AccessDenied') || message.includes('Access Denied')) {
+      if (process.env.R2_BUCKET && process.env.R2_PUBLIC_URL) {
+        console.warn('Gallery bucket access denied, falling back to default bucket.')
+        return uploadToR2(key, body, contentType)
+      }
+    }
+
+    throw error
+  }
 }

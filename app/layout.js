@@ -1,8 +1,6 @@
 import './globals.css'
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
-import AskNandi from '@/components/AskNandi'
 import ClientProviders from '@/components/ClientProviders'
+import RootShell from '@/components/RootShell'
 
 export const metadata = {
   title: 'Sri Agastheeshwara Swamy Temple, Thondavada | Sacred Shaiva Kshetram',
@@ -23,12 +21,9 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className="antialiased">
         <ClientProviders>
-          <Header />
-          <main className="min-h-screen">
+          <RootShell>
             {children}
-          </main>
-          <Footer />
-          <AskNandi />
+          </RootShell>
         </ClientProviders>
       </body>
     </html>

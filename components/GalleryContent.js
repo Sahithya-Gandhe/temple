@@ -7,10 +7,10 @@ function formatCurrency(val) {
   return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(val)
 }
 
-export default function GalleryContent({ donations = [] }) {
+export default function GalleryContent({ donations = [], galleryImages = [] }) {
   const { t } = useTranslation()
 
-  const galleryImages = [
+  const staticGalleryImages = [
     { src: '/assets/templemain.jpeg', alt: 'Temple Main View' },
     { src: '/assets/templeinfra1stpage.jpeg', alt: 'Temple Architecture' },
     { src: '/assets/maingate.jpeg', alt: 'Temple Main Gate' },
@@ -19,6 +19,15 @@ export default function GalleryContent({ donations = [] }) {
     { src: '/assets/realidol2.jpeg', alt: 'Sacred Shrine' },
     { src: '/assets/anadanamimage_forntpage.jpeg', alt: 'Annadanam Seva' },
   ]
+
+  const serverGalleryImages = (galleryImages || []).map((image) => ({
+    src: image.image_url,
+    alt: image.title || 'Temple Gallery',
+    title: image.title || '',
+    description: image.description || '',
+  }))
+
+  const combinedImages = [...serverGalleryImages, ...staticGalleryImages]
 
   return (
     <>
@@ -41,15 +50,25 @@ export default function GalleryContent({ donations = [] }) {
 
           {/* Image Grid - Unified Display */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {galleryImages.map((image, index) => (
+            {combinedImages.map((image, index) => (
               <div
                 key={index}
                 className="group relative aspect-[4/3] rounded-xl overflow-hidden shadow-lg cursor-pointer border border-[#C9A24D]/10"
               >
-                <Image src={image.src} alt={image.alt} fill className="object-cover transition-transform duration-700 group-hover:scale-110" sizes="(max-width: 768px) 100vw, 33vw" />
+                <img
+                  src={image.src}
+                  alt={image.alt}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  loading="lazy"
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#4A3F35]/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                   <div className="absolute bottom-0 left-0 right-0 p-6">
-                    <p className="text-white font-medium" style={{fontFamily:'Cinzel,serif', fontSize:'15px'}}>{image.alt}</p>
+                    <p className="text-white font-medium" style={{fontFamily:'Cinzel,serif', fontSize:'15px'}}>{image.title || image.alt}</p>
+                    {image.description && (
+                      <p className="text-white/80 text-[12px] mt-1" style={{fontFamily:'EB Garamond,serif'}}>
+                        {image.description}
+                      </p>
+                    )}
                   </div>
                 </div>
 

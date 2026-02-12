@@ -22,7 +22,22 @@ async function getApprovedDonations() {
   }
 }
 
+async function getGalleryImages() {
+  try {
+    const sql = neon(process.env.DATABASE_URL!)
+    const images = await sql`
+      SELECT id, image_url, title, description, uploaded_at
+      FROM temple_gallery_images
+      ORDER BY uploaded_at DESC
+    `
+    return images
+  } catch {
+    return []
+  }
+}
+
 export default async function GalleryPage() {
   const donations = await getApprovedDonations()
-  return <GalleryContent donations={donations} />
+  const galleryImages = await getGalleryImages()
+  return <GalleryContent donations={donations} galleryImages={galleryImages} />
 }

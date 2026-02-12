@@ -21,6 +21,18 @@ CREATE TABLE IF NOT EXISTS annadanam_donations (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- Temple gallery images
+CREATE TABLE IF NOT EXISTS temple_gallery_images (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  image_url TEXT NOT NULL,
+  title TEXT,
+  description TEXT,
+  uploaded_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
 -- Index for public queries (approved donations sorted by date)
 CREATE INDEX IF NOT EXISTS idx_donations_approved_date
   ON annadanam_donations (approved, created_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_gallery_uploaded_date
+  ON temple_gallery_images (uploaded_at DESC);
