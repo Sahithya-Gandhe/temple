@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server'
 import sql from '@/lib/db'
 import { normalizeStoredImageUrl, STORAGE_PATHS } from '@/lib/image-storage'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   try {
     const rows = await sql`
@@ -14,7 +16,7 @@ export async function GET() {
     const urls = rows.map((row) => normalizeStoredImageUrl(row.image_url, STORAGE_PATHS.donations).imageUrl)
     return NextResponse.json(urls, {
       headers: {
-        'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=3600',
+        'Cache-Control': 'no-store',
       },
     })
   } catch (error) {

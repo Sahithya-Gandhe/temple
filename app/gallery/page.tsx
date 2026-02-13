@@ -3,6 +3,8 @@ import { neon } from '@neondatabase/serverless'
 import GalleryContent from '@/components/GalleryContent'
 import { normalizeStoredImageUrl, STORAGE_PATHS } from '@/lib/image-storage'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Gallery | Sri Agastheeshwara Swamy Temple, Thondavada',
   description: 'View images of Sri Agastheeshwara Swamy Temple - temple architecture, festivals, Annadanam seva, and sacred moments.',
