@@ -23,9 +23,12 @@ interface GalleryImage {
 }
 
 export default function AdminDashboard() {
+  const ITEMS_PER_PAGE = 4
   const [activeTab, setActiveTab] = useState<'donations' | 'gallery'>('donations')
   const [donations, setDonations] = useState<Donation[]>([])
   const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([])
+  const [donationPage, setDonationPage] = useState(1)
+  const [galleryPage, setGalleryPage] = useState(1)
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
   const [donorName, setDonorName] = useState('')
@@ -80,6 +83,14 @@ export default function AdminDashboard() {
     setLoading(true)
     Promise.all([fetchDonations(), fetchGalleryImages()]).finally(() => setLoading(false))
   }, [fetchDonations, fetchGalleryImages])
+
+  useEffect(() => {
+    setDonationPage(1)
+  }, [donations.length])
+
+  useEffect(() => {
+    setGalleryPage(1)
+  }, [galleryImages.length])
 
   const handleLogout = async () => {
     await fetch('/api/admin/logout', { method: 'POST' })
@@ -235,6 +246,54 @@ export default function AdminDashboard() {
 
   const formatDate = (dateStr: string) =>
     new Date(dateStr).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+
+  const donationTotalPages = Math.max(1, Math.ceil(donations.length / ITEMS_PER_PAGE))
+  const galleryTotalPages = Math.max(1, Math.ceil(galleryImages.length / ITEMS_PER_PAGE))
+
+  const paginatedDonations = donations.slice((donationPage - 1) * ITEMS_PER_PAGE, donationPage * ITEMS_PER_PAGE)
+  const paginatedGalleryImages = galleryImages.slice((galleryPage - 1) * ITEMS_PER_PAGE, galleryPage * ITEMS_PER_PAGE)
+
+  const renderPagination = (
+    currentPage: number,
+    totalPages: number,
+    onPageChange: (page: number) => void
+  ) => {
+    if (totalPages <= 1) return null
+
+    return (
+      <div className="mt-6 flex flex-wrap items-center justify-center gap-2" style={{ fontFamily: 'Inter, sans-serif' }}>
+        <button
+          onClick={() => onPageChange(Math.max(1, currentPage - 1))}
+          disabled={currentPage === 1}
+          className="px-3 py-1.5 text-sm rounded-md border border-[#C9A24D]/30 text-[#4A3F35] bg-white hover:bg-[#FAF9F6] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        >
+          Prev
+        </button>
+
+        {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
+          <button
+            key={page}
+            onClick={() => onPageChange(page)}
+            className={`min-w-[36px] px-2.5 py-1.5 text-sm rounded-md border transition-colors ${
+              currentPage === page
+                ? 'bg-[#C9A24D] text-white border-[#C9A24D]'
+                : 'bg-white text-[#4A3F35] border-[#C9A24D]/30 hover:bg-[#FAF9F6]'
+            }`}
+          >
+            {page}
+          </button>
+        ))}
+
+        <button
+          onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
+          disabled={currentPage === totalPages}
+          className="px-3 py-1.5 text-sm rounded-md border border-[#C9A24D]/30 text-[#4A3F35] bg-white hover:bg-[#FAF9F6] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        >
+          Next
+        </button>
+      </div>
+    )
+  }
 
   if (loading) {
     return (
@@ -394,8 +453,9 @@ export default function AdminDashboard() {
                     <p className="text-[#6B6B6B]" style={{ fontFamily: 'EB Garamond, serif' }}>No donations yet</p>
                   </div>
                 ) : (
-                  <div className="grid sm:grid-cols-2 gap-5">
-                    {donations.map((d) => (
+                  <>
+                  <div className="hidden sm:grid sm:grid-cols-2 gap-5">
+                    {paginatedDonations.map((d) => (
                       <div key={d.id} className="bg-[#FAF9F6] rounded-xl overflow-hidden border border-[#C9A24D]/15 shadow-sm hover:shadow-md transition-shadow">
                         <div className="aspect-[4/3] relative">
                           <img src={d.image_url} alt={d.donor_name} className="w-full h-full object-cover" loading="lazy" decoding="async" />
@@ -427,6 +487,53 @@ export default function AdminDashboard() {
                       </div>
                     ))}
                   </div>
+
+                  <div className="sm:hidden flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-1 px-1 hide-scrollbar">
+                    {paginatedDonations.map((d) => (
+                      <div key={d.id} className="min-w-[84%] snap-start bg-[#FAF9F6] rounded-xl overflow-hidden border border-[#C9A24D]/15 shadow-sm">
+                        <div className="aspect-[4/3] relative">
+                          <img src={d.image_url} alt={d.donor_name} className="w-full h-full object-cover" loading="lazy" decoding="async" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end p-4">
+                            <p className="text-[#C9A24D] font-semibold text-lg truncate w-full" style={{ fontFamily: 'Cinzel, serif', textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}>
+                              {d.donor_name}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="p-4">
+                          <div className="flex items-center justify-between">
+                            <p className="text-xl font-bold text-[#C9A24D]" style={{ fontFamily: 'Cinzel, serif' }}>{formatCurrency(d.amount)}</p>
+                            <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${d.approved ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`} style={{ fontFamily: 'Inter, sans-serif' }}>
+                              {d.approved ? 'Approved' : 'Pending'}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between mt-3 pt-3 border-t border-[#C9A24D]/10">
+                            <p className="text-xs text-[#6B6B6B]" style={{ fontFamily: 'Inter, sans-serif' }}>{formatDate(d.created_at)}</p>
+                            <button
+                              onClick={() => handleDelete(d.id)}
+                              className="text-xs px-3 py-1.5 text-red-600 hover:bg-red-50 rounded-md transition-colors font-medium"
+                              style={{ fontFamily: 'Inter, sans-serif' }}
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {renderPagination(donationPage, donationTotalPages, setDonationPage)}
+
+                  {donationTotalPages > 1 && (
+                    <div className="sm:hidden flex justify-center mt-3">
+                      <div className="swipe-hint">
+                        <span>Swipe to see next</span>
+                        <svg viewBox="0 0 24 24" aria-hidden>
+                          <path strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" d="M7 5l7 7-7 7" />
+                        </svg>
+                      </div>
+                    </div>
+                  )}
+                  </>
                 )}
               </div>
             </div>
@@ -519,8 +626,9 @@ export default function AdminDashboard() {
                     <p className="text-[#6B6B6B]" style={{ fontFamily: 'EB Garamond, serif' }}>No gallery images yet</p>
                   </div>
                 ) : (
-                  <div className="grid sm:grid-cols-2 gap-5">
-                    {galleryImages.map((image) => (
+                  <>
+                  <div className="hidden sm:grid sm:grid-cols-2 gap-5">
+                    {paginatedGalleryImages.map((image) => (
                       <div key={image.id} className="bg-[#FAF9F6] rounded-xl overflow-hidden border border-[#C9A24D]/15 shadow-sm hover:shadow-md transition-shadow">
                         <div className="aspect-[4/3] relative">
                           <img src={image.image_url} alt={image.title || 'Gallery image'} className="w-full h-full object-cover" loading="lazy" decoding="async" />
@@ -552,6 +660,54 @@ export default function AdminDashboard() {
                       </div>
                     ))}
                   </div>
+
+                  <div className="sm:hidden flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-1 px-1 hide-scrollbar">
+                    {paginatedGalleryImages.map((image) => (
+                      <div key={image.id} className="min-w-[84%] snap-start bg-[#FAF9F6] rounded-xl overflow-hidden border border-[#C9A24D]/15 shadow-sm">
+                        <div className="aspect-[4/3] relative">
+                          <img src={image.image_url} alt={image.title || 'Gallery image'} className="w-full h-full object-cover" loading="lazy" decoding="async" />
+                          {image.title && (
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end p-4">
+                              <p className="text-[#FFD877] font-semibold text-lg truncate w-full" style={{ fontFamily: 'Cinzel, serif', textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}>
+                                {image.title}
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                        <div className="p-4">
+                          {image.description && (
+                            <p className="text-sm text-[#4A3F35] mb-3" style={{ fontFamily: 'EB Garamond, serif' }}>
+                              {image.description}
+                            </p>
+                          )}
+                          <div className="flex items-center justify-between pt-3 border-t border-[#C9A24D]/10">
+                            <p className="text-xs text-[#6B6B6B]" style={{ fontFamily: 'Inter, sans-serif' }}>{formatDate(image.uploaded_at)}</p>
+                            <button
+                              onClick={() => handleGalleryDelete(image.id)}
+                              className="text-xs px-3 py-1.5 text-red-600 hover:bg-red-50 rounded-md transition-colors font-medium"
+                              style={{ fontFamily: 'Inter, sans-serif' }}
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {renderPagination(galleryPage, galleryTotalPages, setGalleryPage)}
+
+                  {galleryTotalPages > 1 && (
+                    <div className="sm:hidden flex justify-center mt-3">
+                      <div className="swipe-hint">
+                        <span>Swipe to see next</span>
+                        <svg viewBox="0 0 24 24" aria-hidden>
+                          <path strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" d="M7 5l7 7-7 7" />
+                        </svg>
+                      </div>
+                    </div>
+                  )}
+                  </>
                 )}
               </div>
             </div>
