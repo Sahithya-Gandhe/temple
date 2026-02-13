@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { verifySession } from '@/lib/auth'
 import sql from '@/lib/db'
 import { uploadToR2, validateImageBuffer } from '@/lib/r2'
+import { buildObjectKey, normalizeStoredImageUrl, STORAGE_PATHS } from '@/lib/image-storage'
 
 // GET - Fetch all donations (admin only)
 export async function GET() {
@@ -16,7 +17,28 @@ export async function GET() {
       FROM annadanam_donations
       ORDER BY created_at DESC
     `
-    return NextResponse.json(donations)
+
+    const updates: Array<{ id: string; image_url: string }> = []
+    const normalizedDonations = donations.map((donation) => {
+      const normalized = normalizeStoredImageUrl(donation.image_url, STORAGE_PATHS.donations)
+      if (normalized.changed) {
+        updates.push({ id: donation.id, image_url: normalized.imageUrl })
+      }
+      return {
+        ...donation,
+        image_url: normalized.imageUrl,
+      }
+    })
+
+    if (updates.length > 0) {
+      await Promise.all(
+        updates.map((donation) =>
+          sql`UPDATE annadanam_donations SET image_url = ${donation.image_url} WHERE id = ${donation.id}`
+        )
+      )
+    }
+
+    return NextResponse.json(normalizedDonations)
   } catch (error) {
     console.error('Error fetching donations:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
@@ -99,9 +121,7 @@ export async function POST(request: NextRequest) {
 
     validateImageBuffer(imageBuffer, contentType)
 
-    const safeName = originalFileName.replace(/[^a-zA-Z0-9._-]/g, '_')
-    const timestamp = Date.now()
-    const fileKey = `uploads/${timestamp}-${safeName}`
+    const fileKey = buildObjectKey('donations', originalFileName)
     const imageUrl = await uploadToR2(fileKey, imageBuffer, contentType)
 
     // Insert into database

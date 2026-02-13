@@ -398,7 +398,7 @@ export default function AdminDashboard() {
                     {donations.map((d) => (
                       <div key={d.id} className="bg-[#FAF9F6] rounded-xl overflow-hidden border border-[#C9A24D]/15 shadow-sm hover:shadow-md transition-shadow">
                         <div className="aspect-[4/3] relative">
-                          <img src={d.image_url} alt={d.donor_name} className="w-full h-full object-cover" />
+                          <img src={d.image_url} alt={d.donor_name} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                           {/* Name Overlay */}
                           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end p-4">
                             <p className="text-[#C9A24D] font-semibold text-lg truncate w-full" style={{ fontFamily: 'Cinzel, serif', textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}>
@@ -523,7 +523,7 @@ export default function AdminDashboard() {
                     {galleryImages.map((image) => (
                       <div key={image.id} className="bg-[#FAF9F6] rounded-xl overflow-hidden border border-[#C9A24D]/15 shadow-sm hover:shadow-md transition-shadow">
                         <div className="aspect-[4/3] relative">
-                          <img src={image.image_url} alt={image.title || 'Gallery image'} className="w-full h-full object-cover" />
+                          <img src={image.image_url} alt={image.title || 'Gallery image'} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                           {image.title && (
                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end p-4">
                               <p className="text-[#FFD877] font-semibold text-lg truncate w-full" style={{ fontFamily: 'Cinzel, serif', textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}>

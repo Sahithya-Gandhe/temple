@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { verifySession } from '@/lib/auth'
 import sql from '@/lib/db'
-import { uploadToGalleryR2, validateImageBuffer } from '@/lib/r2'
+import { uploadToR2, validateImageBuffer } from '@/lib/r2'
+import { buildObjectKey, normalizeStoredImageUrl, STORAGE_PATHS } from '@/lib/image-storage'
 
 export async function GET() {
   const session = await verifySession()
@@ -16,7 +17,27 @@ export async function GET() {
       ORDER BY uploaded_at DESC
     `
 
-    return NextResponse.json(rows)
+    const updates: Array<{ id: string; image_url: string }> = []
+    const normalizedRows = rows.map((row) => {
+      const normalized = normalizeStoredImageUrl(row.image_url, STORAGE_PATHS.gallery)
+      if (normalized.changed) {
+        updates.push({ id: row.id, image_url: normalized.imageUrl })
+      }
+      return {
+        ...row,
+        image_url: normalized.imageUrl,
+      }
+    })
+
+    if (updates.length > 0) {
+      await Promise.all(
+        updates.map((row) =>
+          sql`UPDATE temple_gallery_images SET image_url = ${row.image_url} WHERE id = ${row.id}`
+        )
+      )
+    }
+
+    return NextResponse.json(normalizedRows)
   } catch (error) {
     console.error('Error fetching gallery images:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
@@ -51,10 +72,8 @@ export async function POST(request: NextRequest) {
 
     validateImageBuffer(imageBuffer, contentType)
 
-    const safeName = originalFileName.replace(/[^a-zA-Z0-9._-]/g, '_')
-    const timestamp = Date.now()
-    const fileKey = `uploads/gallery/${timestamp}-${safeName}`
-    const imageUrl = await uploadToGalleryR2(fileKey, imageBuffer, contentType)
+    const fileKey = buildObjectKey('gallery', originalFileName)
+    const imageUrl = await uploadToR2(fileKey, imageBuffer, contentType)
 
     const result = await sql`
       INSERT INTO temple_gallery_images (image_url, title, description)

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import sql from '@/lib/db'
+import { normalizeStoredImageUrl, STORAGE_PATHS } from '@/lib/image-storage'
 
 export async function GET() {
   try {
@@ -9,7 +10,16 @@ export async function GET() {
       ORDER BY uploaded_at DESC
     `
 
-    return NextResponse.json(rows)
+    const images = rows.map((row) => ({
+      ...row,
+      image_url: normalizeStoredImageUrl(row.image_url, STORAGE_PATHS.gallery).imageUrl,
+    }))
+
+    return NextResponse.json(images, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=3600',
+      },
+    })
   } catch (error) {
     console.error('Error fetching gallery images:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
