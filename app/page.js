@@ -19,6 +19,7 @@ export default function Home() {
             priority
             className="object-cover"
             style={{ objectPosition: 'center 35%' }}
+            sizes="100vw"
           />
           {/* Subtle overlay for readability */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60" />
@@ -264,7 +265,7 @@ export default function Home() {
               { src: '/assets/templeinfra1stpage.jpeg', alt: 'Temple Architecture', span: '' },
             ].map((image, index) => (
               <div key={index} className={`relative ${image.span ? image.span : ''} ${image.span ? 'aspect-[4/3]' : 'aspect-square'} rounded-xl overflow-hidden shadow-soft group cursor-pointer border border-[#C9A24D]/10`}>
-                <Image src={image.src} alt={image.alt} fill className="object-cover transition-transform duration-600 group-hover:scale-[1.02]" />
+                <Image src={image.src} alt={image.alt} fill className="object-cover transition-transform duration-600 group-hover:scale-[1.02]" sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 flex items-end p-4">
                   <p className="text-white text-[14px]" style={{ fontFamily: 'Cinzel,serif' }}>{image.alt}</p>
                 </div>
@@ -281,7 +282,7 @@ export default function Home() {
       {/* ═══════════ CTA BANNER ═══════════ */}
       <section className="relative py-20 overflow-hidden">
         <div className="absolute inset-0">
-          <Image src="/assets/templemain.jpeg" alt="Temple Background" fill className="object-cover" />
+          <Image src="/assets/templemain.jpeg" alt="Temple Background" fill className="object-cover" sizes="100vw" />
           <div className="absolute inset-0 bg-[#4A3F35]/90" />
         </div>
 

@@ -16,11 +16,16 @@ export default function GalleryContent({ donations = [], galleryImages = [] }) {
   const [donationPage, setDonationPage] = useState(1)
   const [lightboxImage, setLightboxImage] = useState(null)
 
-  const openLightbox = (event, src, alt) => {
+  const openLightbox = (event, items, index) => {
     const rect = event.currentTarget.getBoundingClientRect()
+    const selectedItem = items[index]
+    if (!selectedItem?.src) return
+
     setLightboxImage({
-      src,
-      alt,
+      src: selectedItem.src,
+      alt: selectedItem.alt,
+      items,
+      index,
       originRect: {
         top: rect.top,
         left: rect.left,
@@ -48,6 +53,15 @@ export default function GalleryContent({ donations = [], galleryImages = [] }) {
   }))
 
   const combinedImages = [...serverGalleryImages, ...staticGalleryImages]
+  const galleryLightboxItems = combinedImages.map((image) => ({
+    src: image.src,
+    alt: image.alt,
+  }))
+  const donationLightboxItems = donations.map((donation) => ({
+    src: donation.image_url,
+    alt: donation.donor_name,
+  }))
+
   const galleryTotalPages = Math.max(1, Math.ceil(combinedImages.length / ITEMS_PER_PAGE))
   const donationTotalPages = Math.max(1, Math.ceil(donations.length / ITEMS_PER_PAGE))
 
@@ -124,7 +138,7 @@ export default function GalleryContent({ donations = [], galleryImages = [] }) {
             {paginatedGalleryImages.map((image, index) => (
               <div
                 key={index}
-                onClick={(event) => openLightbox(event, image.src, image.alt)}
+                onClick={(event) => openLightbox(event, galleryLightboxItems, (galleryPage - 1) * ITEMS_PER_PAGE + index)}
                 className="group relative aspect-[4/3] rounded-xl overflow-hidden shadow-lg cursor-zoom-in border border-[#C9A24D]/10"
               >
                 <img
@@ -161,7 +175,7 @@ export default function GalleryContent({ donations = [], galleryImages = [] }) {
             {paginatedGalleryImages.map((image, index) => (
               <div
                 key={index}
-                onClick={(event) => openLightbox(event, image.src, image.alt)}
+                onClick={(event) => openLightbox(event, galleryLightboxItems, (galleryPage - 1) * ITEMS_PER_PAGE + index)}
                 className="group relative min-w-[84%] max-w-[84%] aspect-[4/3] rounded-xl overflow-hidden shadow-lg cursor-zoom-in border border-[#C9A24D]/10 snap-start"
               >
                 <img
@@ -215,13 +229,13 @@ export default function GalleryContent({ donations = [], galleryImages = [] }) {
             {donations.length > 0 ? (
               <>
               <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-5 xl:gap-6">
-                {paginatedDonations.map((donation) => (
+                {paginatedDonations.map((donation, index) => (
                   <div
                     key={donation.id}
                     className="bg-white rounded-xl overflow-hidden border border-[#C9A24D]/20 shadow-md hover:shadow-xl transition-all duration-500 group"
                   >
                     <div
-                      onClick={(event) => openLightbox(event, donation.image_url, donation.donor_name)}
+                      onClick={(event) => openLightbox(event, donationLightboxItems, (donationPage - 1) * ITEMS_PER_PAGE + index)}
                       className="relative aspect-[4/3] overflow-hidden cursor-zoom-in"
                     >
                       <img
@@ -256,13 +270,13 @@ export default function GalleryContent({ donations = [], galleryImages = [] }) {
               </div>
 
               <div className="sm:hidden flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-1 px-1 hide-scrollbar">
-                {paginatedDonations.map((donation) => (
+                {paginatedDonations.map((donation, index) => (
                   <div
                     key={donation.id}
                     className="min-w-[84%] max-w-[84%] snap-start bg-white rounded-xl overflow-hidden border border-[#C9A24D]/20 shadow-md"
                   >
                     <div
-                      onClick={(event) => openLightbox(event, donation.image_url, donation.donor_name)}
+                      onClick={(event) => openLightbox(event, donationLightboxItems, (donationPage - 1) * ITEMS_PER_PAGE + index)}
                       className="relative aspect-[4/3] overflow-hidden cursor-zoom-in"
                     >
                       <img

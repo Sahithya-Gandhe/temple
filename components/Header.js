@@ -84,6 +84,7 @@ export default function Header() {
                 alt="Sri Agastheeshwara Temple Logo"
                 fill
                 className="object-cover"
+                sizes="80px"
               />
             </div>
             <div className="hidden sm:block">

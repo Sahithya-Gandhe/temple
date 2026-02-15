@@ -23,6 +23,24 @@ interface GalleryImage {
   uploaded_at: string
 }
 
+interface LightboxItem {
+  src: string
+  alt: string
+}
+
+interface LightboxState {
+  src: string
+  alt: string
+  items: LightboxItem[]
+  index: number
+  originRect: {
+    top: number
+    left: number
+    width: number
+    height: number
+  }
+}
+
 export default function AdminDashboard() {
   const ITEMS_PER_PAGE = 6
   const [activeTab, setActiveTab] = useState<'donations' | 'gallery'>('donations')
@@ -41,15 +59,20 @@ export default function AdminDashboard() {
   const [galleryDescription, setGalleryDescription] = useState('')
   const [galleryFile, setGalleryFile] = useState<File | null>(null)
   const [galleryPreview, setGalleryPreview] = useState<string | null>(null)
-  const [lightboxImage, setLightboxImage] = useState<{ src: string; alt: string; originRect: { top: number; left: number; width: number; height: number } } | null>(null)
+  const [lightboxImage, setLightboxImage] = useState<LightboxState | null>(null)
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
   const router = useRouter()
 
-  const openLightbox = (event: React.MouseEvent<HTMLDivElement>, src: string, alt: string) => {
+  const openLightbox = (event: React.MouseEvent<HTMLDivElement>, items: LightboxItem[], index: number) => {
     const rect = event.currentTarget.getBoundingClientRect()
+    const selectedItem = items[index]
+    if (!selectedItem?.src) return
+
     setLightboxImage({
-      src,
-      alt,
+      src: selectedItem.src,
+      alt: selectedItem.alt,
+      items,
+      index,
       originRect: {
         top: rect.top,
         left: rect.left,
@@ -268,6 +291,14 @@ export default function AdminDashboard() {
 
   const paginatedDonations = donations.slice((donationPage - 1) * ITEMS_PER_PAGE, donationPage * ITEMS_PER_PAGE)
   const paginatedGalleryImages = galleryImages.slice((galleryPage - 1) * ITEMS_PER_PAGE, galleryPage * ITEMS_PER_PAGE)
+  const donationLightboxItems: LightboxItem[] = donations.map((donation) => ({
+    src: donation.image_url,
+    alt: donation.donor_name,
+  }))
+  const galleryLightboxItems: LightboxItem[] = galleryImages.map((image) => ({
+    src: image.image_url,
+    alt: image.title || 'Gallery image',
+  }))
 
   const renderPagination = (
     currentPage: number,
@@ -471,9 +502,9 @@ export default function AdminDashboard() {
                 ) : (
                   <>
                   <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 xl:gap-5">
-                    {paginatedDonations.map((d) => (
+                    {paginatedDonations.map((d, index) => (
                       <div key={d.id} className="bg-[#FAF9F6] rounded-xl overflow-hidden border border-[#C9A24D]/15 shadow-sm hover:shadow-md transition-shadow">
-                        <div onClick={(event) => openLightbox(event, d.image_url, d.donor_name)} className="aspect-[4/3] relative cursor-zoom-in">
+                        <div onClick={(event) => openLightbox(event, donationLightboxItems, (donationPage - 1) * ITEMS_PER_PAGE + index)} className="aspect-[4/3] relative cursor-zoom-in">
                           <img src={d.image_url} alt={d.donor_name} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                           {/* Name Overlay */}
                           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end p-4">
@@ -505,9 +536,9 @@ export default function AdminDashboard() {
                   </div>
 
                   <div className="sm:hidden w-full max-w-full flex gap-4 overflow-x-auto overscroll-x-contain snap-x snap-mandatory pb-2 hide-scrollbar">
-                    {paginatedDonations.map((d) => (
+                    {paginatedDonations.map((d, index) => (
                       <div key={d.id} className="min-w-[84%] max-w-[84%] snap-start bg-[#FAF9F6] rounded-xl overflow-hidden border border-[#C9A24D]/15 shadow-sm">
-                        <div onClick={(event) => openLightbox(event, d.image_url, d.donor_name)} className="aspect-[4/3] relative cursor-zoom-in">
+                        <div onClick={(event) => openLightbox(event, donationLightboxItems, (donationPage - 1) * ITEMS_PER_PAGE + index)} className="aspect-[4/3] relative cursor-zoom-in">
                           <img src={d.image_url} alt={d.donor_name} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end p-4">
                             <p className="text-[#C9A24D] font-semibold text-lg truncate w-full" style={{ fontFamily: 'Cinzel, serif', textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}>
@@ -644,9 +675,9 @@ export default function AdminDashboard() {
                 ) : (
                   <>
                   <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 xl:gap-5">
-                    {paginatedGalleryImages.map((image) => (
+                    {paginatedGalleryImages.map((image, index) => (
                       <div key={image.id} className="bg-[#FAF9F6] rounded-xl overflow-hidden border border-[#C9A24D]/15 shadow-sm hover:shadow-md transition-shadow">
-                        <div onClick={(event) => openLightbox(event, image.image_url, image.title || 'Gallery image')} className="aspect-[4/3] relative cursor-zoom-in">
+                        <div onClick={(event) => openLightbox(event, galleryLightboxItems, (galleryPage - 1) * ITEMS_PER_PAGE + index)} className="aspect-[4/3] relative cursor-zoom-in">
                           <img src={image.image_url} alt={image.title || 'Gallery image'} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                           {image.title && (
                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end p-4">
@@ -678,9 +709,9 @@ export default function AdminDashboard() {
                   </div>
 
                   <div className="sm:hidden w-full max-w-full flex gap-4 overflow-x-auto overscroll-x-contain snap-x snap-mandatory pb-2 hide-scrollbar">
-                    {paginatedGalleryImages.map((image) => (
+                    {paginatedGalleryImages.map((image, index) => (
                       <div key={image.id} className="min-w-[84%] max-w-[84%] snap-start bg-[#FAF9F6] rounded-xl overflow-hidden border border-[#C9A24D]/15 shadow-sm">
-                        <div onClick={(event) => openLightbox(event, image.image_url, image.title || 'Gallery image')} className="aspect-[4/3] relative cursor-zoom-in">
+                        <div onClick={(event) => openLightbox(event, galleryLightboxItems, (galleryPage - 1) * ITEMS_PER_PAGE + index)} className="aspect-[4/3] relative cursor-zoom-in">
                           <img src={image.image_url} alt={image.title || 'Gallery image'} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                           {image.title && (
                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end p-4">

@@ -12,7 +12,7 @@ export default function DonateContent() {
       {/* Hero Banner */}
       <section className="relative h-[45vh] min-h-[320px] flex items-center justify-center">
         <div className="absolute inset-0">
-          <Image src="/assets/anadanamimage_forntpage.jpeg" alt="Annadanam Seva" fill className="object-cover" />
+          <Image src="/assets/anadanamimage_forntpage.jpeg" alt="Annadanam Seva" fill className="object-cover" sizes="100vw" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-[#4A3F35]/70" />
         </div>
         <div className="relative z-10 text-center text-white px-6">
