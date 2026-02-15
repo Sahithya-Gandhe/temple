@@ -11,7 +11,7 @@ function formatCurrency(val) {
 
 export default function GalleryContent({ donations = [], galleryImages = [] }) {
   const { t } = useTranslation()
-  const ITEMS_PER_PAGE = 4
+  const ITEMS_PER_PAGE = 6
   const [galleryPage, setGalleryPage] = useState(1)
   const [donationPage, setDonationPage] = useState(1)
   const [lightboxImage, setLightboxImage] = useState(null)
@@ -120,12 +120,12 @@ export default function GalleryContent({ donations = [], galleryImages = [] }) {
         <div className="container-temple">
 
           {/* Image Grid - Unified Display */}
-          <div className="hidden sm:grid sm:grid-cols-2 xl:grid-cols-3 gap-5 xl:gap-6">
+          <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-5 xl:gap-6">
             {paginatedGalleryImages.map((image, index) => (
               <div
                 key={index}
                 onClick={(event) => openLightbox(event, image.src, image.alt)}
-                className="group relative aspect-[5/4] rounded-xl overflow-hidden shadow-lg cursor-zoom-in border border-[#C9A24D]/10"
+                className="group relative aspect-[4/3] rounded-xl overflow-hidden shadow-lg cursor-zoom-in border border-[#C9A24D]/10"
               >
                 <img
                   src={image.src}
@@ -214,7 +214,7 @@ export default function GalleryContent({ donations = [], galleryImages = [] }) {
 
             {donations.length > 0 ? (
               <>
-              <div className="hidden sm:grid sm:grid-cols-2 xl:grid-cols-3 gap-5 xl:gap-6">
+              <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-5 xl:gap-6">
                 {paginatedDonations.map((donation) => (
                   <div
                     key={donation.id}
@@ -222,7 +222,7 @@ export default function GalleryContent({ donations = [], galleryImages = [] }) {
                   >
                     <div
                       onClick={(event) => openLightbox(event, donation.image_url, donation.donor_name)}
-                      className="relative aspect-[5/4] overflow-hidden cursor-zoom-in"
+                      className="relative aspect-[4/3] overflow-hidden cursor-zoom-in"
                     >
                       <img
                         src={donation.image_url}

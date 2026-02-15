@@ -24,7 +24,7 @@ interface GalleryImage {
 }
 
 export default function AdminDashboard() {
-  const ITEMS_PER_PAGE = 4
+  const ITEMS_PER_PAGE = 6
   const [activeTab, setActiveTab] = useState<'donations' | 'gallery'>('donations')
   const [donations, setDonations] = useState<Donation[]>([])
   const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([])
@@ -470,10 +470,10 @@ export default function AdminDashboard() {
                   </div>
                 ) : (
                   <>
-                  <div className="hidden sm:grid sm:grid-cols-2 xl:grid-cols-3 gap-4 xl:gap-5">
+                  <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 xl:gap-5">
                     {paginatedDonations.map((d) => (
                       <div key={d.id} className="bg-[#FAF9F6] rounded-xl overflow-hidden border border-[#C9A24D]/15 shadow-sm hover:shadow-md transition-shadow">
-                        <div onClick={(event) => openLightbox(event, d.image_url, d.donor_name)} className="aspect-[5/4] relative cursor-zoom-in">
+                        <div onClick={(event) => openLightbox(event, d.image_url, d.donor_name)} className="aspect-[4/3] relative cursor-zoom-in">
                           <img src={d.image_url} alt={d.donor_name} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                           {/* Name Overlay */}
                           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end p-4">
@@ -643,10 +643,10 @@ export default function AdminDashboard() {
                   </div>
                 ) : (
                   <>
-                  <div className="hidden sm:grid sm:grid-cols-2 xl:grid-cols-3 gap-4 xl:gap-5">
+                  <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 xl:gap-5">
                     {paginatedGalleryImages.map((image) => (
                       <div key={image.id} className="bg-[#FAF9F6] rounded-xl overflow-hidden border border-[#C9A24D]/15 shadow-sm hover:shadow-md transition-shadow">
-                        <div onClick={(event) => openLightbox(event, image.image_url, image.title || 'Gallery image')} className="aspect-[5/4] relative cursor-zoom-in">
+                        <div onClick={(event) => openLightbox(event, image.image_url, image.title || 'Gallery image')} className="aspect-[4/3] relative cursor-zoom-in">
                           <img src={image.image_url} alt={image.title || 'Gallery image'} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                           {image.title && (
                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end p-4">
