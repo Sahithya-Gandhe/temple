@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useTranslation } from '@/lib/LanguageContext'
+import ImageLightbox from '@/components/ImageLightbox'
 
 function formatCurrency(val) {
   return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(val)
@@ -13,6 +14,21 @@ export default function GalleryContent({ donations = [], galleryImages = [] }) {
   const ITEMS_PER_PAGE = 4
   const [galleryPage, setGalleryPage] = useState(1)
   const [donationPage, setDonationPage] = useState(1)
+  const [lightboxImage, setLightboxImage] = useState(null)
+
+  const openLightbox = (event, src, alt) => {
+    const rect = event.currentTarget.getBoundingClientRect()
+    setLightboxImage({
+      src,
+      alt,
+      originRect: {
+        top: rect.top,
+        left: rect.left,
+        width: rect.width,
+        height: rect.height,
+      },
+    })
+  }
 
   const staticGalleryImages = [
     { src: '/assets/templemain.jpeg', alt: 'Temple Main View' },
@@ -104,11 +120,12 @@ export default function GalleryContent({ donations = [], galleryImages = [] }) {
         <div className="container-temple">
 
           {/* Image Grid - Unified Display */}
-          <div className="hidden sm:grid sm:grid-cols-2 gap-6">
+          <div className="hidden sm:grid sm:grid-cols-2 xl:grid-cols-3 gap-5 xl:gap-6">
             {paginatedGalleryImages.map((image, index) => (
               <div
                 key={index}
-                className="group relative aspect-[4/3] rounded-xl overflow-hidden shadow-lg cursor-pointer border border-[#C9A24D]/10"
+                onClick={(event) => openLightbox(event, image.src, image.alt)}
+                className="group relative aspect-[5/4] rounded-xl overflow-hidden shadow-lg cursor-zoom-in border border-[#C9A24D]/10"
               >
                 <img
                   src={image.src}
@@ -144,7 +161,8 @@ export default function GalleryContent({ donations = [], galleryImages = [] }) {
             {paginatedGalleryImages.map((image, index) => (
               <div
                 key={index}
-                className="group relative min-w-[84%] aspect-[4/3] rounded-xl overflow-hidden shadow-lg cursor-pointer border border-[#C9A24D]/10 snap-start"
+                onClick={(event) => openLightbox(event, image.src, image.alt)}
+                className="group relative min-w-[84%] max-w-[84%] aspect-[4/3] rounded-xl overflow-hidden shadow-lg cursor-zoom-in border border-[#C9A24D]/10 snap-start"
               >
                 <img
                   src={image.src}
@@ -196,13 +214,16 @@ export default function GalleryContent({ donations = [], galleryImages = [] }) {
 
             {donations.length > 0 ? (
               <>
-              <div className="hidden sm:grid sm:grid-cols-2 gap-8">
+              <div className="hidden sm:grid sm:grid-cols-2 xl:grid-cols-3 gap-5 xl:gap-6">
                 {paginatedDonations.map((donation) => (
                   <div
                     key={donation.id}
-                    className="bg-white rounded-xl overflow-hidden border-2 border-[#C9A24D]/20 shadow-md hover:shadow-xl transition-all duration-500 group"
+                    className="bg-white rounded-xl overflow-hidden border border-[#C9A24D]/20 shadow-md hover:shadow-xl transition-all duration-500 group"
                   >
-                    <div className="relative aspect-[4/3] overflow-hidden">
+                    <div
+                      onClick={(event) => openLightbox(event, donation.image_url, donation.donor_name)}
+                      className="relative aspect-[5/4] overflow-hidden cursor-zoom-in"
+                    >
                       <img
                         src={donation.image_url}
                         alt={donation.donor_name}
@@ -238,9 +259,12 @@ export default function GalleryContent({ donations = [], galleryImages = [] }) {
                 {paginatedDonations.map((donation) => (
                   <div
                     key={donation.id}
-                    className="min-w-[84%] snap-start bg-white rounded-xl overflow-hidden border-2 border-[#C9A24D]/20 shadow-md"
+                    className="min-w-[84%] max-w-[84%] snap-start bg-white rounded-xl overflow-hidden border border-[#C9A24D]/20 shadow-md"
                   >
-                    <div className="relative aspect-[4/3] overflow-hidden">
+                    <div
+                      onClick={(event) => openLightbox(event, donation.image_url, donation.donor_name)}
+                      className="relative aspect-[4/3] overflow-hidden cursor-zoom-in"
+                    >
                       <img
                         src={donation.image_url}
                         alt={donation.donor_name}
@@ -303,6 +327,11 @@ export default function GalleryContent({ donations = [], galleryImages = [] }) {
           </div>
         </div>
       </section>
+
+      <ImageLightbox
+        lightbox={lightboxImage}
+        onRequestClose={() => setLightboxImage(null)}
+      />
     </>
   )
 }
