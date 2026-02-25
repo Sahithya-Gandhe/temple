@@ -39,7 +39,7 @@ export default function GalleryContent({ donations = [], galleryImages = [] }) {
     { src: '/assets/templemain.jpeg', alt: 'Temple Main View' },
     { src: '/assets/templeinfra1stpage.jpeg', alt: 'Temple Architecture' },
     { src: '/assets/maingate.jpeg', alt: 'Temple Main Gate' },
-    { src: '/assets/godimage.jpeg', alt: 'Sri Agastheeshwara Swamy' },
+    { src: '/assets/godimage.jpeg', alt: 'Sri Agastheeswara Swamy' },
     { src: '/assets/realidol1.jpeg', alt: 'Divine Idol' },
     { src: '/assets/realidol2.jpeg', alt: 'Sacred Shrine' },
     { src: '/assets/anadanamimage_forntpage.jpeg', alt: 'Annadanam Seva' },

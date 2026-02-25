@@ -53,7 +53,7 @@ async function setup() {
   console.log('Tables created successfully.')
 
   // Seed admin user
-  const adminEmail = 'admin@agastheeshwaradevasthanam.in'
+  const adminEmail = 'admin@Agastheeswaradevasthanam.in'
   const adminPassword = 'temple2024'
   const hash = await bcrypt.hash(adminPassword, 12)
 

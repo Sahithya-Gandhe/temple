@@ -1,8 +1,8 @@
 import DonateContent from '@/components/DonateContent'
 
 export const metadata = {
-  title: 'Donate | Sri Agastheeshwara Swamy Temple, Thondavada',
-  description: 'Support Annadanam seva and temple activities. Donate to Sri Agastheeshwara Swamy Temple and participate in sacred service.',
+  title: 'Donate | Sri Agastheeswara Swamy Temple, Thondavada',
+  description: 'Support Annadanam seva and temple activities. Donate to Sri Agastheeswara Swamy Temple and participate in sacred service.',
 }
 
 export default function DonatePage() {

@@ -269,7 +269,7 @@ export default function AdminDashboard() {
             <div>
               <h1 className="text-xl text-white font-bold" style={{ fontFamily: 'Cinzel, serif' }}>Admin Dashboard</h1>
               <p className="text-white/80 text-sm" style={{ fontFamily: 'Inter, sans-serif' }}>
-                Sri Agastheeshwara Devasthanam
+                Sri Agastheeswara Devasthanam
               </p>
             </div>
           </div>

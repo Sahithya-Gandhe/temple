@@ -11,7 +11,7 @@ export default function AboutContent() {
       {/* Hero Banner */}
       <section className="relative h-[45vh] min-h-[320px] flex items-center justify-center">
         <div className="absolute inset-0">
-          <Image src="/assets/templeinfra1stpage.jpeg" alt="Sri Agastheeshwara Temple" fill className="object-cover" sizes="100vw" />
+          <Image src="/assets/templeinfra1stpage.jpeg" alt="Sri Agastheeswara Temple" fill className="object-cover" sizes="100vw" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-[#4A3F35]/70" />
         </div>
         <div className="relative z-10 text-center text-white px-6">

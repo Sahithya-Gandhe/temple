@@ -141,13 +141,13 @@ export default function DonateContent() {
               </p>
               <div className="space-y-2 mb-6">
                 <p>
-                  <a href="mailto:trustee@agastheeshwaradevasthanam.in" className="text-[#C9A24D] hover:text-[#D4B56A] transition-colors" style={{fontFamily:'Inter,sans-serif', fontSize:'14px'}}>
-                    trustee@agastheeshwaradevasthanam.in
+                  <a href="mailto:trustee@agastheeswaradevasthanam.in" className="text-[#C9A24D] hover:text-[#D4B56A] transition-colors" style={{fontFamily:'Inter,sans-serif', fontSize:'14px'}}>
+                    trustee@agastheeswaradevasthanam.in
                   </a>
                 </p>
                 <p>
-                  <a href="mailto:contact@agastheeshwaradevasthanam.in" className="text-[#C9A24D] hover:text-[#D4B56A] transition-colors" style={{fontFamily:'Inter,sans-serif', fontSize:'14px'}}>
-                    contact@agastheeshwaradevasthanam.in
+                  <a href="mailto:contact@agastheeswaradevasthanam.in" className="text-[#C9A24D] hover:text-[#D4B56A] transition-colors" style={{fontFamily:'Inter,sans-serif', fontSize:'14px'}}>
+                    contact@agastheeswaradevasthanam.in
                   </a>
                 </p>
               </div>

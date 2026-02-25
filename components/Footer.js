@@ -59,13 +59,13 @@ export default function Footer() {
               {t('footer.contact')}
             </h4>
             <div className="space-y-3" style={{fontFamily:'Inter,sans-serif'}}>
-              <a href="mailto:trustee@agastheeshwaradevasthanam.in"
+              <a href="mailto:trustee@agastheeswaradevasthanam.in"
                 className="block text-white/65 hover:text-[#C9A24D] transition-colors text-[14px]">
-                trustee@agastheeshwaradevasthanam.in
+                trustee@agastheeswaradevasthanam.in
               </a>
-              <a href="mailto:contact@agastheeshwaradevasthanam.in"
+              <a href="mailto:contact@agastheeswaradevasthanam.in"
                 className="block text-white/65 hover:text-[#C9A24D] transition-colors text-[14px]">
-                contact@agastheeshwaradevasthanam.in
+                contact@agastheeswaradevasthanam.in
               </a>
             </div>
 
@@ -88,7 +88,7 @@ export default function Footer() {
         {/* Bottom */}
         <div className="border-t border-white/10 mt-12 pt-6 pb-14 flex flex-col md:flex-row justify-between items-center gap-3">
           <p className="text-white/40 text-[12px]" style={{fontFamily:'Inter,sans-serif'}}>
-            © {new Date().getFullYear()} Sri Agastheeshwara Devasthanam, Thondavada. {t('footer.allRights')}
+            © {new Date().getFullYear()} Sri Agastheeswara Devasthanam, Thondavada. {t('footer.allRights')}
           </p>
           <p className="text-[#C9A24D]/60 text-[15px]" style={{fontFamily:'EB Garamond,serif'}}>
             {t('footer.omNamah')}

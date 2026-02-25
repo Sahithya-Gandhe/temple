@@ -1,4 +1,4 @@
--- Sri Agastheeshwara Devasthanam - Database Schema
+-- Sri Agastheeswara Devasthanam - Database Schema
 -- Run against Neon DB (PostgreSQL)
 
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";

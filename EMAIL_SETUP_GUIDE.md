@@ -21,8 +21,8 @@ This setup uses EmailJS to send 2 emails when someone submits the contact form:
 2. Click **Add New Service**
 3. Choose **Gmail** (recommended) or your email provider
 4. Connect your temple email:
-   - **trustee@agastheeshwaradevasthanam.in** (recommended)
-   - OR **contact@agastheeshwaradevasthanam.in**
+    - **trustee@agastheeswaradevasthanam.in** (recommended)
+    - OR **contact@agastheeswaradevasthanam.in**
 5. Copy the **Service ID** (e.g., `service_abc1234`)
 
 ---
@@ -37,7 +37,7 @@ This setup uses EmailJS to send 2 emails when someone submits the contact form:
 
 #### **To Email:**
 ```
-trustee@agastheeshwaradevasthanam.in
+trustee@agastheeswaradevasthanam.in
 ```
 
 #### **From Name:**
@@ -162,7 +162,7 @@ New Inquiry: {{subject}}
     <div class="container">
         <div class="header">
             <h1>🕉 New Temple Inquiry Received</h1>
-            <p>Sri Agastheeshwara Swamy Devasthanam</p>
+            <p>Sri Agastheeswara Swamy Devasthanam</p>
         </div>
 
         <div class="timestamp">
@@ -207,7 +207,7 @@ New Inquiry: {{subject}}
         </div>
 
         <div class="footer">
-            <p><strong>Sri Agastheeshwara Swamy Temple</strong></p>
+            <p><strong>Sri Agastheeswara Swamy Temple</strong></p>
             <p>Thondavada, Chandragiri Mandal, Tirupati District, Andhra Pradesh</p>
             <p style="margin-top: 10px; font-size: 11px; color: #999;">
                 This is an automated notification from the temple website contact form.
@@ -237,23 +237,23 @@ New Inquiry: {{subject}}
 
 #### **From Name:**
 ```
-Sri Agastheeshwara Devasthanam
+Sri Agastheeswara Devasthanam
 ```
 
 #### **From Email:**
 (Use your verified email from Email Service)
 ```
-trustee@agastheeshwaradevasthanam.in
+trustee@agastheeswaradevasthanam.in
 ```
 
 #### **Reply To:**
 ```
-contact@agastheeshwaradevasthanam.in
+contact@agastheeswaradevasthanam.in
 ```
 
 #### **Subject:**
 ```
-We've received your message - Sri Agastheeshwara Temple
+We've received your message - Sri Agastheeswara Temple
 ```
 
 #### **Content (HTML):**
@@ -405,7 +405,7 @@ We've received your message - Sri Agastheeshwara Temple
     <div class="container">
         <div class="header">
             <div class="logo">🕉</div>
-            <h1>Sri Agastheeshwara Swamy Temple</h1>
+            <h1>Sri Agastheeswara Swamy Temple</h1>
         </div>
 
         <div class="content">
@@ -451,13 +451,13 @@ We've received your message - Sri Agastheeshwara Temple
         </div>
 
         <div class="footer">
-            <p class="temple-name">Sri Agastheeshwara Swamy Devasthanam</p>
+            <p class="temple-name">Sri Agastheeswara Swamy Devasthanam</p>
             <p>Thondavada, Chandragiri Mandal</p>
             <p>Tirupati District, Andhra Pradesh, India</p>
             <div style="margin: 20px 0; height: 1px; background: rgba(201,162,77,0.3);"></div>
             <p style="font-size: 12px;">
-                📧 trustee@agastheeshwaradevasthanam.in<br>
-                📧 contact@agastheeshwaradevasthanam.in
+                📧 trustee@agastheeswaradevasthanam.in<br>
+                📧 contact@agastheeswaradevasthanam.in
             </p>
             <div class="social-links">
                 <a href="https://temple-wheat-ten.vercel.app">Visit Website</a> • 
@@ -523,7 +523,7 @@ npm install @emailjs/browser
 2. Go to https://temple-wheat-ten.vercel.app/contact
 3. Fill out the contact form
 4. Submit and check:
-   - ✅ Admin receives full inquiry details at trustee@agastheeshwaradevasthanam.in
+    - ✅ Admin receives full inquiry details at trustee@agastheeswaradevasthanam.in
    - ✅ User receives auto-reply confirmation at their email
 
 ---

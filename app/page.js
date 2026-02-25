@@ -14,7 +14,7 @@ export default function Home() {
         <div className="absolute inset-0 z-0">
           <Image
             src="/assets/maingate.jpeg"
-            alt="Sri Agastheeshwara Swamy Temple Entrance"
+            alt="Sri Agastheeswara Swamy Temple Entrance"
             fill
             priority
             className="object-cover"
@@ -34,7 +34,7 @@ export default function Home() {
 
           {/* Main Title */}
           <h1 className="text-[2rem] md:text-[3.5rem] lg:text-[3.2rem] mb-4 leading-[1.1] fade-in-delay-1 text-white" style={{ fontFamily: 'times new roman', fontWeight: 600, letterSpacing: '0.03em', textShadow: '0 0 30px rgba(255,215,0,0.8), 0 0 60px rgba(255,215,0,0.4)' }}>
-            Sri Agastheeshwara Swamy Temple
+            Sri Agastheeswara Swamy Temple
           </h1>
 
           {/* Divider */}
@@ -108,7 +108,7 @@ export default function Home() {
               </div>
               {/* Inset deity image */}
               <div className="absolute -bottom-6 -left-6 w-28 h-28 rounded-xl overflow-hidden shadow-premium-lg border-4 border-[#FAF9F6] hidden md:block">
-                <Image src="/assets/godimage.jpeg" alt="Sri Agastheeshwara Swamy" fill className="object-cover" sizes="112px" />
+                <Image src="/assets/godimage.jpeg" alt="Sri Agastheeswara Swamy" fill className="object-cover" sizes="112px" />
               </div>
             </div>
           </div>
@@ -261,7 +261,7 @@ export default function Home() {
               { src: '/assets/templemain.jpeg', alt: 'Temple Main View', span: 'md:col-span-2 md:row-span-2' },
               { src: '/assets/realidol1.jpeg', alt: 'Divine Idol', span: '' },
               { src: '/assets/realidol2.jpeg', alt: 'Sacred Shrine', span: '' },
-              { src: '/assets/godimage.jpeg', alt: 'Sri Agastheeshwara Swamy', span: '' },
+              { src: '/assets/godimage.jpeg', alt: 'Sri Agastheeswara Swamy', span: '' },
               { src: '/assets/templeinfra1stpage.jpeg', alt: 'Temple Architecture', span: '' },
             ].map((image, index) => (
               <div key={index} className={`relative ${image.span ? image.span : ''} ${image.span ? 'aspect-[4/3]' : 'aspect-square'} rounded-xl overflow-hidden shadow-soft group cursor-pointer border border-[#C9A24D]/10`}>

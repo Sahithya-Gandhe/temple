@@ -52,7 +52,7 @@ export default function ContactContent() {
         message: formData.message,
         reply_to: formData.email,
         to_name: formData.name,
-        to_email: 'trustee.agastheeshwara@gmail.com', // Admin email
+        to_email: 'trustee.agastheeswara@gmail.com', // Admin email
         submission_date: new Date().toLocaleString('en-IN', {
           dateStyle: 'full',
           timeStyle: 'short',
@@ -134,14 +134,14 @@ export default function ContactContent() {
                 <div className="space-y-4">
                   <div>
                     <p className="text-[12px] text-[#6B6B6B] mb-1" style={{fontFamily:'Inter,sans-serif'}}>{t('contact.templeTrustee')}</p>
-                    <a href="mailto:trustee@agastheeshwaradevasthanam.in" className="text-[#C9A24D] hover:text-[#4A3F35] transition-colors font-medium text-[14px]" style={{fontFamily:'Inter,sans-serif'}}>
-                      trustee@agastheeshwaradevasthanam.in
+                    <a href="mailto:trustee@agastheeswaradevasthanam.in" className="text-[#C9A24D] hover:text-[#4A3F35] transition-colors font-medium text-[14px]" style={{fontFamily:'Inter,sans-serif'}}>
+                      trustee@agastheeswaradevasthanam.in
                     </a>
                   </div>
                   <div>
                     <p className="text-[12px] text-[#6B6B6B] mb-1" style={{fontFamily:'Inter,sans-serif'}}>{t('contact.generalInquiries')}</p>
-                    <a href="mailto:contact@agastheeshwaradevasthanam.in" className="text-[#C9A24D] hover:text-[#4A3F35] transition-colors font-medium text-[14px]" style={{fontFamily:'Inter,sans-serif'}}>
-                      contact@agastheeshwaradevasthanam.in
+                    <a href="mailto:contact@agastheeswaradevasthanam.in" className="text-[#C9A24D] hover:text-[#4A3F35] transition-colors font-medium text-[14px]" style={{fontFamily:'Inter,sans-serif'}}>
+                      contact@agastheeswaradevasthanam.in
                     </a>
                   </div>
                 </div>
@@ -154,7 +154,7 @@ export default function ContactContent() {
                 </div>
                 <h3 className="text-[1.2rem] text-[#1C1C1C] mb-4" style={{fontFamily:'Cinzel,serif'}}>{t('contact.templeAddress')}</h3>
                 <p className="text-[#3A3A3A] leading-[1.85] text-[16px]" style={{fontFamily:'EB Garamond,serif'}}>
-                  Sri Agastheeshwara Swamy Temple<br />
+                  Sri Agastheeswara Swamy Temple<br />
                   Thondavada, Chandragiri Mandal<br />
                   Tirupati District<br />
                   Andhra Pradesh, India

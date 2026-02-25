@@ -81,7 +81,7 @@ export default function Header() {
             <div className="relative w-[80px] h-[80px] rounded-full overflow-hidden border-[2.5px] border-[#C9A24D]/60 transition-all duration-400 group-hover:border-[#C9A24D] shadow-md">
               <Image
                 src="/assets/templelogoheader.jpeg"
-                alt="Sri Agastheeshwara Temple Logo"
+                alt="Sri Agastheeswara Temple Logo"
                 fill
                 className="object-cover"
                 sizes="80px"

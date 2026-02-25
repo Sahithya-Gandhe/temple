@@ -50,7 +50,7 @@ export default function AdminLogin() {
               Admin Login
             </h1>
             <p className="text-sm mt-2" style={{ color: '#6B6B6B', fontFamily: 'EB Garamond, serif' }}>
-              Sri Agastheeshwara Devasthanam
+              Sri Agastheeswara Devasthanam
             </p>
           </div>
 

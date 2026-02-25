@@ -128,7 +128,7 @@ export default function HistoryContent() {
 
               <div className="grid md:grid-cols-2 gap-4">
                 {[
-                  { name: 'Sri Agastheeshwara Swamy', location: 'Thondavada' },
+                  { name: 'Sri Agastheeswara Swamy', location: 'Thondavada' },
                   { name: 'Sri Parasareeswara', location: 'Yogimallavaram' },
                   { name: 'Sri Parasu Rameswara', location: 'Gudimallam' },
                   { name: 'Sri Kapileswara', location: 'Kapila Teertham, Tirupati' },
